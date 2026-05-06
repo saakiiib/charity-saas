@@ -12,8 +12,14 @@ class IdentifyTenant
     {
         $host = $request->getHost();
 
-        // Skip main domain
-        if ($host === 'charityhubhub.co.uk' || $host === 'www.charityhubhub.co.uk') {
+        // Remove www. prefix
+        $host = preg_replace('/^www\./', '', $host);
+
+        if (
+            $host === 'charityhubhub.co.uk' ||
+            filter_var($host, FILTER_VALIDATE_IP) ||
+            $host === 'localhost'
+        ) {
             return $next($request);
         }
 
