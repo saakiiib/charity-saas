@@ -12,13 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->use([
-
+        $middleware->web(append: [
+            \App\Http\Middleware\IdentifyTenant::class,
         ]);
         $middleware->alias([
             'is_admin' => App\Http\Middleware\IsAdmin::class,
-            'is_user' => App\Http\Middleware\IsUser::class,
-            'tenant' => \App\Http\Middleware\IdentifyTenant::class,
+            'is_user'  => App\Http\Middleware\IsUser::class,
+            'tenant'   => \App\Http\Middleware\IdentifyTenant::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
