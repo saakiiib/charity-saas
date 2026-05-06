@@ -10,10 +10,7 @@ class IdentifyTenant
 {
     public function handle(Request $request, Closure $next)
     {
-        $host = $request->getHost();
-
-        $host = preg_replace('/^www\./', '', $host);
-        
+        $host = preg_replace('/^www\./', '', $request->getHost());
         $mainDomain = preg_replace('/^www\./', '', parse_url(config('app.url'), PHP_URL_HOST));
 
         if (
@@ -24,14 +21,19 @@ class IdentifyTenant
             return $next($request);
         }
 
-        $tenant = Tenant::where('domain', $host)->where('status', 1)->first();
+        $tenant = Tenant::where('domain', $host)
+            ->where('status', 1)
+            ->first();
 
-        if (!$tenant) {
-            return $next($request);
+        if ($tenant) {
+
+            if ($request->is('login') || $request->is('register')) {
+                abort(404);
+            }
+
+            app()->instance('currentTenant', $tenant);
+            view()->share('currentTenant', $tenant);
         }
-
-        app()->instance('currentTenant', $tenant);
-        view()->share('currentTenant', $tenant);
 
         return $next($request);
     }

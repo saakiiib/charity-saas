@@ -24,11 +24,6 @@ Route::get('/clear', function() {
 require __DIR__.'/admin.php';
 
 Auth::routes();
-Route::middleware('tenant')->group(function () {
-    Route::get('/login', function () { abort(404); });
-    Route::get('/register', function () { abort(404); });
-    Route::get('/password/reset', function () { abort(404); });
-});
 
 Route::get('/', function () {
     if (app()->bound('currentTenant')) {
