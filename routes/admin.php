@@ -1,0 +1,89 @@
+<?php
+
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CompanyDetailsController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\FAQController;
+use App\Http\Controllers\Admin\MasterController;
+use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], function(){
+    Route::get('/dashboard', [HomeController::class, 'adminHome'])->name('admin.dashboard');
+    // User
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user', [UserController::class, 'store'])->name('user.store');
+    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::post('/user-update', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.delete');
+    Route::post('/user-status', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
+
+    // Slider
+    Route::get('/slider', [SliderController::class, 'getSlider'])->name('allslider');
+    Route::post('/slider', [SliderController::class, 'sliderStore']);
+    Route::get('/slider/{id}/edit', [SliderController::class, 'sliderEdit']);
+    Route::post('/slider-update', [SliderController::class, 'sliderUpdate']);
+    Route::delete('/slider/{id}', [SliderController::class, 'sliderDelete'])->name('slider.delete');
+    Route::post('/slider-status', [SliderController::class, 'toggleStatus']);
+    Route::post('/sliders/update-order', [SliderController::class, 'updateOrder'])->name('sliders.updateOrder');
+
+    // Contact
+    Route::get('/contacts', [ContactController::class,'index'])->name('contacts.index');
+    Route::get('/contacts/{id}', [ContactController::class,'show'])->name('contacts.show');
+    Route::delete('/contacts/{id}/delete', [ContactController::class,'destroy'])->name('contacts.delete');
+    Route::post('/contacts/toggle-status', [ContactController::class,'toggleStatus'])->name('contacts.toggleStatus');
+
+    // FAQ
+    Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
+    Route::post('/faq', [FAQController::class, 'store'])->name('faq.store');
+    Route::get('/faq/{id}/edit', [FAQController::class, 'edit'])->name('faq.edit');
+    Route::post('/faq-update', [FAQController::class, 'update'])->name('faq.update');
+    Route::delete('/faq/{id}', [FAQController::class, 'destroy'])->name('faq.delete');
+
+    Route::get('/company-details', [CompanyDetailsController::class, 'index'])->name('admin.companyDetails');
+    Route::post('/company-details', [CompanyDetailsController::class, 'update'])->name('admin.companyDetails');
+
+    Route::get('/company/seo-meta', [CompanyDetailsController::class, 'seoMeta'])->name('admin.company.seo-meta');
+    Route::post('/company/seo-meta/update', [CompanyDetailsController::class, 'seoMetaUpdate'])->name('admin.company.seo-meta.update');
+
+    Route::get('/about-us', [CompanyDetailsController::class, 'aboutUs'])->name('admin.aboutUs');
+    Route::post('/about-us', [CompanyDetailsController::class, 'aboutUsUpdate'])->name('admin.aboutUs');
+
+    Route::get('/privacy-policy', [CompanyDetailsController::class, 'privacyPolicy'])->name('admin.privacy-policy');
+    Route::post('/privacy-policy', [CompanyDetailsController::class, 'privacyPolicyUpdate'])->name('admin.privacy-policy');
+
+    Route::get('/terms-and-conditions', [CompanyDetailsController::class, 'termsAndConditions'])->name('admin.terms-and-conditions');
+    Route::post('/terms-and-conditions', [CompanyDetailsController::class, 'termsAndConditionsUpdate'])->name('admin.terms-and-conditions');
+    
+    Route::get('/mail-body', [CompanyDetailsController::class, 'mailBody'])->name('admin.mail-body');
+    Route::post('/mail-body', [CompanyDetailsController::class, 'mailBodyUpdate'])->name('admin.mail-body');
+
+    Route::get('/home-footer', [CompanyDetailsController::class, 'homeFooter'])->name('admin.home-footer');
+    Route::post('/home-footer', [CompanyDetailsController::class, 'homeFooterUpdate'])->name('admin.home-footer');
+
+    Route::get('/copyright', [CompanyDetailsController::class, 'copyright'])->name('admin.copyright');
+    Route::post('/copyright', [CompanyDetailsController::class, 'copyrightUpdate'])->name('admin.copyright');
+
+    Route::get('/master', [MasterController::class, 'index'])->name('master.index');
+    Route::post('/master', [MasterController::class, 'store'])->name('master.store');
+    Route::get('/master/{id}/edit', [MasterController::class, 'edit'])->name('master.edit');
+    Route::post('/master-update', [MasterController::class, 'update'])->name('master.update');
+    Route::delete('/master/{id}', [MasterController::class, 'destroy'])->name('master.delete');
+
+    Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+    Route::post('/sections/update-order', [SectionController::class, 'updateOrder'])->name('sections.updateOrder');
+    Route::post('/sections/toggle-status', [SectionController::class, 'toggleStatus'])->name('sections.toggleStatus');
+
+    // Category crud
+    Route::get('/category', [CategoryController::class, 'index'])->name('allcategory');
+    Route::get('/parent-categories', [CategoryController::class, 'parentCategories'])->name('parent.categories');
+    Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/category/{id}/edit', [CategoryController::class, 'edit']);
+    Route::post('/category-update', [CategoryController::class, 'update']);
+    Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+    Route::post('/category-status', [CategoryController::class, 'toggleStatus']);
+
+});
