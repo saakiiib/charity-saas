@@ -8,6 +8,10 @@ class HomeController extends Controller
 {
     public function dashboard()
     {
+        if (app()->bound('currentTenant')) {
+            return app(TenantSiteController::class)->index();
+        }
+
         if (Auth::check()) {
             $user = auth()->user();
 
