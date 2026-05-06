@@ -9,11 +9,6 @@ class HomeController extends Controller
     public function dashboard()
     {
 
-        \Log::info('Dashboard hit', [
-            'host'  => request()->getHost(),
-            'bound' => app()->bound('currentTenant'),
-        ]);
-
         if (app()->bound('currentTenant')) {
             return app(TenantSiteController::class)->index();
         }
