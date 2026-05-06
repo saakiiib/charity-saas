@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -85,5 +86,13 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::post('/category-update', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('category.delete');
     Route::post('/category-status', [CategoryController::class, 'toggleStatus']);
+
+    //Tenant
+    Route::get('/tenants', [TenantController::class, 'index'])->name('alltenants');
+    Route::post('/tenants', [TenantController::class, 'store'])->name('tenant.store');
+    Route::get('/tenants/{id}/edit', [TenantController::class, 'edit'])->name('tenant.edit');
+    Route::post('/tenants-update', [TenantController::class, 'update'])->name('tenant.update');
+    Route::delete('/tenants/{id}', [TenantController::class, 'delete'])->name('tenant.delete');
+    Route::post('/tenants-status', [TenantController::class, 'toggleStatus'])->name('tenant.status');
 
 });

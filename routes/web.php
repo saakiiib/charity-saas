@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TenantSiteController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,12 @@ require __DIR__.'/admin.php';
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'dashboard'])->name('home');
+Route::get('/', function () {
+    if (app()->bound('currentTenant')) {
+        return app(TenantSiteController::class)->index();
+    }
+    return app(HomeController::class)->dashboard();
+})->name('home');
 
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 

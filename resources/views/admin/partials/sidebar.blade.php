@@ -86,13 +86,20 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('alltenants') }}" class="nav-link {{ Route::is('alltenants') ? 'active' : '' }}">
+                        <i class="ri-account-circle-line"></i>
+                        <span>Tenants</span>
+                    </a>
+                </li>
+
                 @php
                     $productActive = Route::is(
                         'allcategory',
                     );
                 @endphp
 
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a class="nav-link menu-link {{ $productActive ? 'active' : '' }}" 
                       href="#sidebarAllProducts" data-bs-toggle="collapse" role="button"
                       aria-expanded="{{ $productActive ? 'true' : 'false' }}" 
