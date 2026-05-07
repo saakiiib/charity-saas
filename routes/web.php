@@ -23,7 +23,11 @@ Route::get('/clear', function() {
 
 require __DIR__.'/admin.php';
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+    'verify' => false,
+]);
 
 Route::get('/', function () {
     if (app()->bound('currentTenant')) {
@@ -31,6 +35,15 @@ Route::get('/', function () {
     }
     return app(HomeController::class)->dashboard();
 })->name('home');
+
+Route::middleware('tenant')->group(function () {
+    Route::get('/', [TenantSiteController::class, 'index']);
+    Route::get('/about', [TenantSiteController::class, 'about']);
+    Route::get('/contact', [TenantSiteController::class, 'contact']);
+    Route::get('/services', [TenantSiteController::class, 'services']);
+    Route::get('/services/{slug}', [TenantSiteController::class, 'serviceDetail']);
+    Route::post('/contact', [TenantSiteController::class, 'contactSubmit']);
+});
 
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
