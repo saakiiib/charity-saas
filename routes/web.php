@@ -44,5 +44,5 @@ Route::group(['prefix' => 'user/', 'middleware' => ['auth', 'is_user', 'verified
 });
 
 Route::fallback(function () {
-    abort(404);
+    return redirect('/');
 });
