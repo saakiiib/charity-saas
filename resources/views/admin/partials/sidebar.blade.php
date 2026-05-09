@@ -57,6 +57,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('post.index') }}"
+                           class="nav-link {{ Route::is('post.index') ? 'active' : '' }}">
+                            <i class="ri-article-line"></i>
+                            <span>Posts</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else

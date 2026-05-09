@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CompanyDetailsController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\MasterController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
@@ -56,6 +57,14 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::delete('/slider/{id}', [SliderController::class, 'destroy'])->name('slider.delete');
     Route::post('/slider-status', [SliderController::class, 'toggleStatus']);
     Route::post('/sliders/update-order', [SliderController::class, 'updateOrder'])->name('sliders.updateOrder');
+
+    // Posts
+    Route::get('/posts', [PostController::class, 'index'])->name('post.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('post.store');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('post.edit');
+    Route::post('/posts-update', [PostController::class, 'update'])->name('post.update');
+    Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.delete');
+    Route::post('/posts-status', [PostController::class, 'toggleStatus'])->name('post.toggleStatus');
 
     // Contact
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
