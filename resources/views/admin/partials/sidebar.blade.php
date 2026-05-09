@@ -65,6 +65,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('testimonial.index') }}"
+                        class="nav-link {{ Route::is('testimonial.index') ? 'active' : '' }}">
+                            <i class="ri-chat-quote-line"></i>
+                            <span>Testimonials</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else

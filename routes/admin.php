@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,14 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::post('/posts-update', [PostController::class, 'update'])->name('post.update');
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.delete');
     Route::post('/posts-status', [PostController::class, 'toggleStatus'])->name('post.toggleStatus');
+
+    // Testimonial
+    Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonial.index');
+    Route::post('/testimonials', [TestimonialController::class, 'store'])->name('testimonial.store');
+    Route::get('/testimonials/{id}/edit', [TestimonialController::class, 'edit'])->name('testimonial.edit');
+    Route::post('/testimonials-update', [TestimonialController::class, 'update'])->name('testimonial.update');
+    Route::delete('/testimonials/{id}', [TestimonialController::class, 'destroy'])->name('testimonial.delete');
+    Route::post('/testimonials-status', [TestimonialController::class, 'toggleStatus'])->name('testimonial.toggleStatus');
 
     // Contact
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
