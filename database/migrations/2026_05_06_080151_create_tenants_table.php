@@ -15,11 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('domain')->unique();
-            $table->string('tagline')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('logo')->nullable();
-            $table->string('primary_color')->default('#007bff');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
