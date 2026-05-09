@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -84,6 +85,14 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::delete('/galleries/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
     Route::post('/galleries-status', [GalleryController::class, 'toggleStatus'])->name('gallery.toggleStatus');
     Route::post('/galleries-order', [GalleryController::class, 'updateOrder'])->name('gallery.updateOrder');
+
+    Route::get('/services', [ServiceController::class, 'index'])->name('service.index');
+    Route::post('/services', [ServiceController::class, 'store'])->name('service.store');
+    Route::get('/services/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
+    Route::post('/services-update', [ServiceController::class, 'update'])->name('service.update');
+    Route::delete('/services/{id}', [ServiceController::class, 'destroy'])->name('service.delete');
+    Route::post('/services-status', [ServiceController::class, 'toggleStatus'])->name('service.toggleStatus');
+    Route::post('/services-order', [ServiceController::class, 'updateOrder'])->name('service.updateOrder');
 
     // Contact
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');

@@ -81,6 +81,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('service.index') }}"
+                        class="nav-link {{ Route::is('service.index') ? 'active' : '' }}">
+                            <i class="ri-service-line"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else
