@@ -89,6 +89,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('faq.index') }}"
+                        class="nav-link {{ Route::is('faq.index') ? 'active' : '' }}">
+                            <i class="ri-question-answer-line"></i>
+                            <span>FAQs</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else

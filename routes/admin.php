@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\CompanyDetailsController;
 use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Admin\FAQController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PostController;
@@ -86,6 +86,7 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::post('/galleries-status', [GalleryController::class, 'toggleStatus'])->name('gallery.toggleStatus');
     Route::post('/galleries-order', [GalleryController::class, 'updateOrder'])->name('gallery.updateOrder');
 
+    //Service
     Route::get('/services', [ServiceController::class, 'index'])->name('service.index');
     Route::post('/services', [ServiceController::class, 'store'])->name('service.store');
     Route::get('/services/{id}/edit', [ServiceController::class, 'edit'])->name('service.edit');
@@ -94,17 +95,19 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::post('/services-status', [ServiceController::class, 'toggleStatus'])->name('service.toggleStatus');
     Route::post('/services-order', [ServiceController::class, 'updateOrder'])->name('service.updateOrder');
 
+    // Faq
+    Route::get('/faqs', [FaqController::class, 'index'])->name('faq.index');
+    Route::post('/faqs', [FaqController::class, 'store'])->name('faq.store');
+    Route::get('/faqs/{id}/edit', [FaqController::class, 'edit'])->name('faq.edit');
+    Route::post('/faqs-update', [FaqController::class, 'update'])->name('faq.update');
+    Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faq.delete');
+    Route::post('/faqs-status', [FaqController::class, 'toggleStatus'])->name('faq.toggleStatus');
+    Route::post('/faqs-order', [FaqController::class, 'updateOrder'])->name('faq.updateOrder');
+
     // Contact
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::delete('/contacts/{id}/delete', [ContactController::class, 'destroy'])->name('contacts.delete');
     Route::post('/contacts/toggle-status', [ContactController::class, 'toggleStatus'])->name('contacts.toggleStatus');
-
-    // FAQ
-    Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
-    Route::post('/faq', [FAQController::class, 'store'])->name('faq.store');
-    Route::get('/faq/{id}/edit', [FAQController::class, 'edit'])->name('faq.edit');
-    Route::post('/faq-update', [FAQController::class, 'update'])->name('faq.update');
-    Route::delete('/faq/{id}', [FAQController::class, 'destroy'])->name('faq.delete');
 
 });
