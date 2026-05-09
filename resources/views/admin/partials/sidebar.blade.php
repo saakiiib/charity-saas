@@ -97,6 +97,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('contacts.index') }}"
+                        class="nav-link {{ Route::is('contacts.index') ? 'active' : '' }}">
+                            <i class="ri-contacts-book-line"></i>
+                            <span>Contacts</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else

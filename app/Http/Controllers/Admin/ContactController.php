@@ -13,7 +13,7 @@ class ContactController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $contacts = Contact::select(['id','first_name','last_name','email','subject','message','status','created_at'])
+            $contacts = Contact::where('tenant_id', $this->tenantId())->select(['id','first_name','last_name','email','subject','message','status','created_at'])
                 ->orderBy('status','asc')->orderByDesc('id');
 
             return DataTables::of($contacts)
