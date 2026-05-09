@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CompanyDetailsController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\FAQController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SectionController;
@@ -74,6 +75,15 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::post('/testimonials-update', [TestimonialController::class, 'update'])->name('testimonial.update');
     Route::delete('/testimonials/{id}', [TestimonialController::class, 'destroy'])->name('testimonial.delete');
     Route::post('/testimonials-status', [TestimonialController::class, 'toggleStatus'])->name('testimonial.toggleStatus');
+
+    // Gallery
+    Route::get('/galleries', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::post('/galleries', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::get('/galleries/{id}/edit', [GalleryController::class, 'edit'])->name('gallery.edit');
+    Route::post('/galleries-update', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::delete('/galleries/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
+    Route::post('/galleries-status', [GalleryController::class, 'toggleStatus'])->name('gallery.toggleStatus');
+    Route::post('/galleries-order', [GalleryController::class, 'updateOrder'])->name('gallery.updateOrder');
 
     // Contact
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');

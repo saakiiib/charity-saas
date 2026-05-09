@@ -73,6 +73,14 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('gallery.index') }}"
+                        class="nav-link {{ Route::is('gallery.index') ? 'active' : '' }}">
+                            <i class="ri-image-line"></i>
+                            <span>Gallery</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else
