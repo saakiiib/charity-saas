@@ -32,7 +32,7 @@ class LoginController extends Controller
       if ($chksts->status == 1) {
         if (auth()->attempt(['email' => $input['email'], 'password' => $input['password']])) {
           if (auth()->user()->user_type == '1') {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('tenant.index');
           } elseif (auth()->user()->user_type == '0') {
             return redirect()->route('user.dashboard');
           }

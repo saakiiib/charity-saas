@@ -19,8 +19,8 @@
                 @if(session('managing_tenant'))
 
                     <li class="nav-item">
-                        <a href="{{ route('tenant.manage.exit') }}" class="nav-link">
-                            <i class="ri-logout-box-line"></i>
+                        <a href="{{ route('tenant.manage.exit') }}" class="nav-link text-warning">
+                            <i class="ri-shut-down-line"></i>
                             <span>Exit to Charities</span>
                         </a>
                     </li>
@@ -108,14 +108,6 @@
                     <li class="nav-item" style="margin-bottom: 200px"></li>
 
                 @else
-
-                    <li class="nav-item">
-                        <a href="{{ route('admin.dashboard') }}"
-                           class="nav-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
-                            <i class="ri-dashboard-line"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
 
                     <li class="nav-item">
                         <a href="{{ route('tenant.index') }}"
