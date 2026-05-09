@@ -13,19 +13,22 @@ return new class extends Migration
     {
         Schema::create('masters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->nullable()->constrained('tenants')->nullOnDelete();
+            $table->string('page')->nullable(); // home, about, contact
             $table->string('name')->nullable();
             $table->string('short_title')->nullable();
-            $table->longText('long_title')->nullable();
-            $table->string('short_description')->nullable();
+            $table->text('long_title')->nullable();
+            $table->text('short_description')->nullable();
             $table->longText('long_description')->nullable();
+            $table->string('image')->nullable();
+            $table->string('image2')->nullable();
+            $table->json('content')->nullable(); // array data
             $table->string('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
             $table->string('meta_image')->nullable();
             $table->longText('meta_keywords')->nullable(); // comma-separated
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->string('deleted_by')->nullable();
             $table->timestamps();
+            $table->index(['tenant_id', 'page']);
         });
     }
 

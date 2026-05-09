@@ -95,7 +95,7 @@ class TenantController extends Controller
         return response()->json(['message' => 'Failed to update.'], 500);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $data = Tenant::findOrFail($id);
 
@@ -121,6 +121,16 @@ class TenantController extends Controller
     public function manage($id)
     {
         $tenant = Tenant::findOrFail($id);
-        return view('admin.tenant.manage', compact('tenant'));
+        session([
+            'managing_tenant' => $id,
+            'managing_tenant_name' => $tenant->name,
+        ]);
+        return redirect()->route('companyDetails.index');
+    }
+
+    public function exit()
+    {
+        session()->forget(['managing_tenant', 'managing_tenant_name']);
+        return redirect()->route('tenant.index');
     }
 }

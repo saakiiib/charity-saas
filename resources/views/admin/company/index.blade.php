@@ -25,14 +25,14 @@
                         <h3 class="card-title mb-0 flex-grow-1">Comapny Details</h3>
                     </div>
 
-                    <form id="createThisForm" action="{{ route('admin.companyDetails') }}" method="POST"
+                    <form id="createThisForm" action="{{ route('companyDetails.update') }}" method="POST"
                         enctype="multipart/form-data">
                         <div class="card-body">
                             @csrf
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row g-3">
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Company name <span class="text-danger">*</span></label>
                                         <input type="text"
@@ -47,7 +47,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 d-none">
                                     <div class="form-group">
                                         <label>Business name</label>
                                         <input type="text"
@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4 d-none">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Instagram</label>
                                         <input type="url"
@@ -169,9 +169,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4 d-none">
+                                <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label>Twitter</label>
+                                        <label>Twitter(X)</label>
                                         <input type="url" class="form-control @error('twitter') is-invalid @enderror"
                                             id="twitter" name="twitter" value="{{ $data->twitter }}">
                                     </div>
@@ -186,7 +186,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4 d-none">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Youtube</label>
                                         <input type="url" class="form-control @error('youtube') is-invalid @enderror"
@@ -202,7 +202,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 d-none">
                                     <div class="form-group">
                                         <label>App store link</label>
                                         <input type="url"
@@ -212,7 +212,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 d-none">
                                     <div class="form-group">
                                         <label>google playstore link</label>
                                         <input type="url"
@@ -257,7 +257,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 d-none">
                                     <div class="form-group">
                                         <label>Company Registration Number</label>
                                         <input type="text"
@@ -267,7 +267,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 d-none">
                                     <div class="form-group">
                                         <label>Bank</label>
                                         <input type="text" class="form-control @error('bank') is-invalid @enderror"
@@ -285,7 +285,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 d-none">
                                     <div class="form-group">
                                         <label>Sort Code</label>
                                         <input type="text"
@@ -375,6 +375,73 @@
                                     <img class="img-thumbnail mt-2" id="footer_logo_preview"
                                         src="{{ isset($data->footer_logo) ? asset('uploads/company/' . $data->footer_logo) : '' }}"
                                         alt="">
+                                </div>
+
+                                <div class="col-12">
+                                <hr>
+                                    <h4 class="mb-3">SEO Meta</h4>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Meta Title</label>
+                                        <input type="text"
+                                            class="form-control @error('meta_title') is-invalid @enderror"
+                                            name="meta_title"
+                                            value="{{ old('meta_title', $data->meta_title) }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Google Site Verification</label>
+                                        <input type="text"
+                                            class="form-control @error('google_site_verification') is-invalid @enderror"
+                                            name="google_site_verification"
+                                            value="{{ old('google_site_verification', $data->google_site_verification) }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Meta Keywords</label>
+                                        <input type="text"
+                                            class="form-control @error('meta_keywords') is-invalid @enderror"
+                                            name="meta_keywords"
+                                            value="{{ old('meta_keywords', $data->meta_keywords) }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Meta Description</label>
+                                        <textarea
+                                            class="form-control @error('meta_description') is-invalid @enderror"
+                                            name="meta_description"
+                                            rows="4">{{ old('meta_description', $data->meta_description) }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Meta Image</label>
+
+                                        <input type="file"
+                                            class="form-control @error('meta_image') is-invalid @enderror"
+                                            name="meta_image"
+                                            onchange="previewImage(event, '#meta_image_preview')"
+                                            accept="image/*">
+
+                                        @error('meta_image')
+                                            <span class="invalid-feedback d-block">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <img class="img-thumbnail mt-2"
+                                        id="meta_image_preview"
+                                        src="{{ $data->meta_image ? asset('uploads/company/meta/' . $data->meta_image) : '' }}">
                                 </div>
 
                             </div>

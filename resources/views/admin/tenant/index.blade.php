@@ -76,7 +76,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         pageLength: 25,
-        ajax: "{{ route('alltenants') }}",
+        ajax: "{{ route('tenant.index') }}",
         columns: [
             { data: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'name' },

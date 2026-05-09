@@ -26,8 +26,18 @@
 
                             <div class="row g-3">
                                 <div class="col-md-12">
-                                    <label class="form-label">Slider Title <span class="text-danger">*</span></label>
+                                    <label class="form-label">Slider Title </label>
                                     <input type="text" class="form-control" id="title" name="title">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Slider Sub Title </label>
+                                    <input type="text" class="form-control" id="sub_title" name="sub_title">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Slider Description </label>
+                                    <textarea class="form-control" id="description" name="description"></textarea>
                                 </div>
 
                                 <div class="col-md-12">
@@ -157,7 +167,7 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
-                ajax: "{{ route('allslider') }}",
+                ajax: "{{ route('slider.index') }}",
                 columns: [{
                         data: 'serial',
                         name: 'serial',
@@ -227,6 +237,8 @@
             $("#addBtn").click(function() {
                 var form_data = new FormData();
                 form_data.append("title", $("#title").val());
+                form_data.append("sub_title", $("#sub_title").val());
+                form_data.append("description", $("#description").val());
                 form_data.append("link", $("#link").val());
                 var featureImgInput = document.getElementById('image');
                 if (featureImgInput.files && featureImgInput.files[0]) form_data.append("image",
@@ -288,6 +300,8 @@
 
             function populateForm(data) {
                 $("#title").val(data.title);
+                $("#sub_title").val(data.sub_title);
+                $("#description").val(data.description);
                 $("#link").val(data.link);
                 $("#codeid").val(data.id);
                 $("#addBtn").val('Update').html('Update');

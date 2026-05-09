@@ -6,19 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CompanyDetails;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Cache;
 
 class CompanyDetailsController extends Controller
 {
     public function index()
     {
-        $data = CompanyDetails::firstOrCreate();
-        return view('admin.company.index',compact('data'));
+        $data = CompanyDetails::firstOrCreate(['tenant_id' => $this->tenantId()]);
+        return view('admin.company.index', compact('data'));
     }
 
     public function update(Request $request)
     {
-        $data = CompanyDetails::first();
+        $tenantId = $this->tenantId();
+        $data = CompanyDetails::firstOrCreate(['tenant_id' => $tenantId]);
 
         $request->validate([
             'company_name' => 'required|string|max:255',
@@ -47,17 +47,38 @@ class CompanyDetailsController extends Controller
             'google_map' => 'nullable|string',
             'company_reg_number' => 'nullable|string',
             'vat_number' => 'nullable|string',
+
             'fav_icon' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'company_logo' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'footer_logo' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
+            'google_site_verification' => 'nullable|string|max:255',
+            'meta_image' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
+
+        if (!file_exists(public_path('uploads/company'))) {
+            mkdir(public_path('uploads/company'), 0755, true);
+        }
+
+        if (!file_exists(public_path('uploads/company/meta'))) {
+            mkdir(public_path('uploads/company/meta'), 0755, true);
+        }
 
         if ($request->hasFile('fav_icon')) {
             if ($data->fav_icon && file_exists(public_path('uploads/company/' . $data->fav_icon))) {
                 unlink(public_path('uploads/company/' . $data->fav_icon));
             }
-            $favIconName = rand(100000, 999999) . '_fav_icon.' . $request->fav_icon->extension();
-            $request->fav_icon->move(public_path('uploads/company'), $favIconName);
+            $favIconName = rand(100000, 999999) . '_fav_icon.webp';
+            Image::make($request->file('fav_icon'))
+                ->resize(64, 64, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 80)
+                ->save(public_path('uploads/company/' . $favIconName));
             $data->fav_icon = $favIconName;
         }
 
@@ -65,8 +86,14 @@ class CompanyDetailsController extends Controller
             if ($data->company_logo && file_exists(public_path('uploads/company/' . $data->company_logo))) {
                 unlink(public_path('uploads/company/' . $data->company_logo));
             }
-            $companyLogoName = rand(100000, 999999) . '_company_logo.' . $request->company_logo->extension();
-            $request->company_logo->move(public_path('uploads/company'), $companyLogoName);
+            $companyLogoName = rand(100000, 999999) . '_company_logo.webp';
+            Image::make($request->file('company_logo'))
+                ->resize(400, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 80)
+                ->save(public_path('uploads/company/' . $companyLogoName));
             $data->company_logo = $companyLogoName;
         }
 
@@ -74,9 +101,34 @@ class CompanyDetailsController extends Controller
             if ($data->footer_logo && file_exists(public_path('uploads/company/' . $data->footer_logo))) {
                 unlink(public_path('uploads/company/' . $data->footer_logo));
             }
-            $footerLogoName = rand(100000, 999999) . '_footer_logo.' . $request->footer_logo->extension();
-            $request->footer_logo->move(public_path('uploads/company'), $footerLogoName);
+            $footerLogoName = rand(100000, 999999) . '_footer_logo.webp';
+            Image::make($request->file('footer_logo'))
+                ->resize(400, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 80)
+                ->save(public_path('uploads/company/' . $footerLogoName));
             $data->footer_logo = $footerLogoName;
+        }
+
+        if ($request->hasFile('meta_image')) {
+
+            if ($data->meta_image && file_exists(public_path('uploads/company/meta/' . $data->meta_image))) {
+                unlink(public_path('uploads/company/meta/' . $data->meta_image));
+            }
+
+            $metaImageName = rand(100000, 999999) . '_meta.webp';
+
+            Image::make($request->file('meta_image'))
+                ->resize(1200, 630, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('webp', 80)
+                ->save(public_path('uploads/company/meta/' . $metaImageName));
+
+            $data->meta_image = $metaImageName;
         }
 
         $data->company_name = $request->company_name;
@@ -111,186 +163,13 @@ class CompanyDetailsController extends Controller
         $data->sort_code = $request->sort_code;
         $data->bank = $request->bank;
 
+        $data->meta_title = $request->meta_title;
+        $data->meta_description = $request->meta_description;
+        $data->meta_keywords = $request->meta_keywords;
+        $data->google_site_verification = $request->google_site_verification;
+
         $data->save();
 
         return redirect()->back()->with('success', 'Company details updated successfully.');
     }
-
-    public function aboutUs()
-    {       
-        $companyDetails = CompanyDetails::select('about_us')->first();
-        return view('admin.company.about_us', compact('companyDetails'));
-    }
-
-    public function aboutUsUpdate(Request $request)
-    {
-        $request->validate([
-            'about_us' => 'required|string',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        $companyDetails->about_us = $request->about_us;
-        $companyDetails->save();
-
-        return redirect()->back()->with('success', 'About us updated successfully.');
-    }
-
-    public function privacyPolicy()
-    {
-        $companyDetails = CompanyDetails::select('privacy_policy')->first();
-        return view('admin.company.privacy', compact('companyDetails'));
-    }
-
-    public function privacyPolicyUpdate(Request $request)
-    {
-        $request->validate([
-            'privacy_policy' => 'required|string',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        $companyDetails->privacy_policy = $request->privacy_policy;
-        $companyDetails->save();
-
-        Cache::forget('company_privacy');
-
-        return redirect()->back()->with('success', 'Privacy policy updated successfully.');
-    }
-
-    public function termsAndConditions()
-    {
-        $companyDetails = CompanyDetails::select('terms_and_conditions')->first();
-        return view('admin.company.terms', compact('companyDetails'));
-    }
-
-    public function termsAndConditionsUpdate(Request $request)
-    {
-        $request->validate([
-            'terms_and_conditions' => 'required|string',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        $companyDetails->terms_and_conditions = $request->terms_and_conditions;
-        $companyDetails->save();
-
-        Cache::forget('company_terms');
-
-        return redirect()->back()->with('success', 'Terms and conditions updated successfully.');
-    }
-
-    public function mailBody()
-    {
-        $companyDetails = CompanyDetails::select('mail_body')->first();
-        return view('admin.company.mail_body', compact('companyDetails'));
-    }
-
-    public function mailBodyUpdate(Request $request)
-    {
-        $request->validate([
-            'mail_body' => 'required',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        $companyDetails->mail_body = $request->mail_body;
-        $companyDetails->save();
-
-        return redirect()->back()->with('success', 'Updated successfully.');
-    }
-
-    public function homeFooter()
-    {
-        $companyDetails = CompanyDetails::select('footer_content')->first();
-        return view('admin.company.home_footer', compact('companyDetails'));
-    }
-
-    public function homeFooterUpdate(Request $request)
-    {
-        $request->validate([
-            'footer_content' => 'required',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        $companyDetails->footer_content = $request->footer_content;
-        $companyDetails->save();
-
-        return redirect()->back()->with('success', 'Updated successfully.');
-    }
-
-    public function copyright()
-    {
-        $companyDetails = CompanyDetails::select('copyright')->first();
-        return view('admin.company.copyright', compact('companyDetails'));
-    }
-
-    public function copyrightUpdate(Request $request)
-    {
-        $request->validate([
-            'copyright' => 'required',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        $companyDetails->copyright = $request->copyright;
-        $companyDetails->save();
-
-        return redirect()->back()->with('success', 'Updated successfully.');
-    }
-
-    public function seoMeta()
-    {
-        $companyDetails = CompanyDetails::first();
-        return view('admin.company.seo-meta', compact('companyDetails'));
-    }
-
-    public function seoMetaUpdate(Request $request)
-    {
-        $request->validate([
-            'google_site_verification' => 'nullable|string|max:255',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string',
-            'meta_keywords' => 'nullable|string',
-            'meta_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-        ]);
-
-        $companyDetails = CompanyDetails::first();
-        if (!$companyDetails) {
-            $companyDetails = new CompanyDetails();
-        }
-
-        $companyDetails->google_site_verification = $request->google_site_verification;
-        $companyDetails->meta_title = $request->meta_title;
-        $companyDetails->meta_description = $request->meta_description;
-        $companyDetails->meta_keywords = $request->meta_keywords;
-
-        // Handle meta image upload
-        if ($request->hasFile('meta_image')) {
-            $metaImage = $request->file('meta_image');
-            $metaImageName = 'meta_' . time() . '.webp';
-            $path = public_path('uploads/company/meta/');
-
-            // Ensure directory exists
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
-            }
-
-            // Delete old image if exists
-            if ($companyDetails->meta_image && file_exists($path . $companyDetails->meta_image)) {
-                unlink($path . $companyDetails->meta_image);
-            }
-
-            // Process and save new image
-            Image::make($metaImage)
-                ->resize(1200, 630, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode('webp', 80)
-                ->save($path . $metaImageName);
-
-            $companyDetails->meta_image = $metaImageName;
-        }
-
-        $companyDetails->save();
-
-        return redirect()->back()->with('success', 'SEO Meta fields updated successfully.');
-    }
-
 }

@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->integer('sl')->nullable();
-            $table->string('name')->nullable();
-            $table->boolean('status')->default(1); 
+            $table->foreignId('tenant_id')->nullable()->constrained('tenants')->nullOnDelete();
+            $table->string('page')->nullable();       // home, about, services etc
+            $table->string('name')->nullable();       // hero, slider, about, services, team etc
+            $table->integer('sl')->nullable();        // serial/order
+            $table->boolean('status')->default(1);
             $table->timestamps();
+
+            $table->index(['tenant_id', 'page']);
         });
     }
 

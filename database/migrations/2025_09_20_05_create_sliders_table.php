@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->nullable()->constrained('tenants')->nullOnDelete();
             $table->string('title')->nullable(); 
-            $table->string('sub_title')->nullable(); 
-            $table->string('link')->nullable(); 
             $table->string('slug')->nullable();
+            $table->string('sub_title')->nullable();
+            $table->text('description')->nullable(); 
+            $table->string('link')->nullable(); 
             $table->string('image')->nullable(); 
             $table->boolean('status')->default(1);
             $table->boolean('serial')->nullable();
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->string('deleted_by')->nullable();
             $table->timestamps();
         });
     }

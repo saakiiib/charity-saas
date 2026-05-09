@@ -5,18 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Slider;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use DataTables;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Cache;
 
 class SliderController extends Controller
 {
-    public function getSlider(Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
-            $sliders = Slider::select(['id','title','image','serial','status'])->orderBy('serial');
+            $sliders = Slider::select(['id','title','image','serial','status'])->where('tenant_id', $this->tenantId())->orderBy('serial');
             return DataTables::of($sliders)
                 ->addIndexColumn()
                 ->addColumn('image', function($row){
@@ -69,14 +66,17 @@ class SliderController extends Controller
         return view('admin.slider.index', compact('sliders'));
     }
 
-    public function sliderStore(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
-            'title'=>'required|unique:sliders,title',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $data = new Slider();
+        $data->tenant_id = $this->tenantId();
         $data->title = $request->title;
+        $data->sub_title = $request->sub_title;
+        $data->description = $request->description;
         $data->link = $request->link;
         $data->created_by = auth()->id();
 
@@ -98,24 +98,25 @@ class SliderController extends Controller
         }
 
         $data->save();
-        Cache::forget('active_sliders');
         return response()->json(['message'=>'Slider created successfully!'],200);
     }
 
-    public function sliderEdit($id)
+    public function edit($id)
     {
         $slider = Slider::findOrFail($id);
         return response()->json($slider);
     }
 
-    public function sliderUpdate(Request $request)
+    public function update(Request $request)
     {
         $request->validate([
-            'title'=>'required|unique:sliders,title,'.$request->codeid,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         $slider = Slider::findOrFail($request->codeid);
         $slider->title = $request->title;
+        $slider->sub_title = $request->sub_title;
+        $slider->description = $request->description;
         $slider->link = $request->link;
         $slider->updated_by = auth()->id();
 
@@ -137,18 +138,16 @@ class SliderController extends Controller
         }
 
         $slider->save();
-        Cache::forget('active_sliders');
         return response()->json(['message'=>'Slider updated successfully!'],200);
     }
 
-    public function sliderDelete($id)
+    public function destroy($id)
     {
         $slider = Slider::findOrFail($id);
         if($slider->image && file_exists(public_path('uploads/slider/'.$slider->image))){
             @unlink(public_path('uploads/slider/'.$slider->image));
         }
         $slider->delete();
-        Cache::forget('active_sliders');
         return response()->json(['message'=>'Slider deleted successfully.'],200);
     }
 
@@ -157,17 +156,17 @@ class SliderController extends Controller
         $slider = Slider::findOrFail($request->slider_id);
         $slider->status = $request->status;
         $slider->save();
-        Cache::forget('active_sliders');
         return response()->json(['message'=>'Slider status updated successfully.'],200);
     }
 
     public function updateOrder(Request $request)
     {
         $order = $request->order;
-        foreach($order as $index=>$id){
-            Slider::where('id',$id)->update(['serial'=>$index+1]);
+        foreach ($order as $index => $id) {
+            Slider::where('id', $id)
+                ->where('tenant_id', $this->tenantId())
+                ->update(['serial' => $index + 1]);
         }
-        Cache::forget('active_sliders');
-        return response()->json(['success'=>true,'message'=>'Slider order updated successfully!']);
+        return response()->json(['success' => true, 'message' => 'Slider order updated successfully!']);
     }
 }

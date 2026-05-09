@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('company_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id')->nullable()->constrained('tenants')->nullOnDelete();
             $table->string('company_name')->nullable();
             $table->string('business_name')->nullable();
             $table->string('company_logo')->nullable();
@@ -23,7 +24,8 @@ return new class extends Migration
             $table->string('phone1')->nullable();
             $table->string('phone2')->nullable();
             $table->string('phone3')->nullable();
-            $table->string('phone4')->nullable();
+            $table->string('phone4')->nullable();  
+            $table->string('whatsapp')->nullable();
             $table->string('email1')->nullable();
             $table->string('email2')->nullable();
             $table->string('website')->nullable();
@@ -33,7 +35,6 @@ return new class extends Migration
             $table->longText('terms_and_conditions')->nullable();
             $table->longText('mail_body')->nullable();
             $table->longText('copyright')->nullable();
-            $table->string('whatsapp')->nullable();
             $table->string('footer_link')->nullable();
             $table->string('header_content')->nullable();
             $table->string('google_play_link')->nullable();
@@ -46,8 +47,8 @@ return new class extends Migration
             $table->string('youtube')->nullable();
             $table->longText('google_map')->nullable();
             $table->longText('about_us')->nullable();
-            $table->longText('bank_info')->nullable();
-            $table->longText('email_bank_info')->nullable();
+            $table->string('bank_info')->nullable();
+            $table->string('email_bank_info')->nullable();
             $table->integer('vat_percent')->nullable();
             $table->string('currency')->nullable();
             $table->string('company_reg_number')->nullable();
@@ -57,12 +58,11 @@ return new class extends Migration
             $table->string('vat_number')->nullable();
             $table->string('opening_time')->nullable();
             $table->string('google_site_verification')->nullable();
+            $table->string('google_analytics_id')->nullable();
             $table->string('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
             $table->longText('meta_keywords')->nullable(); // comma-separated
             $table->string('meta_image')->nullable();
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

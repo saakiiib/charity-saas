@@ -12,7 +12,7 @@ class MasterController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Master::orderByDesc('id');
+            $data = Master::where('tenant_id', $this->tenantId())->orderByDesc('id');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -40,6 +40,7 @@ class MasterController extends Controller
         ]);
 
         $data = new Master();
+        $data->tenant_id = $this->tenantId();
         $data->fill($request->except('meta_image'));
         $data->created_by = auth()->id();
 
