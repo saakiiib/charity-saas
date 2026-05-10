@@ -9,12 +9,18 @@
     <meta name="author" content="{{ $company?->company_name ?? config('app.name') }}">
     <meta name="revisit-after" content="7 days">
 
-    <title>@yield('title', $company?->company_name ?? config('app.name'))</title>
-    <meta name="description" content="@yield('meta_description', $company?->meta_description ?? '')">
-    <meta name="keywords" content="@yield('meta_keywords', $company?->meta_keywords ?? '')">
+    @php
+        $pageTitle       = $company?->company_name ?? config('app.name');
+        $pageDescription = $company?->meta_description ?? '';
+        $pageKeywords    = $company?->meta_keywords ?? '';
+    @endphp
 
-    <meta property="og:title" content="@yield('title', $company?->company_name ?? config('app.name'))">
-    <meta property="og:description" content="@yield('meta_description', $company?->meta_description ?? '')">
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+    <meta name="keywords" content="{{ $pageKeywords }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
     @if($company?->meta_image)
@@ -22,8 +28,8 @@
     @endif
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('title', $company?->company_name ?? config('app.name'))">
-    <meta name="twitter:description" content="@yield('meta_description', $company?->meta_description ?? '')">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
 
     @if($company?->google_site_verification)
         <meta name="google-site-verification" content="{{ $company->google_site_verification }}">
