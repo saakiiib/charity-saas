@@ -92,7 +92,6 @@
     @include('frontend.extra')
 
     @stack('script')
-    @yield('script')
 
 </body>
 </html>
