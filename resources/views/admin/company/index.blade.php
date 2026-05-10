@@ -390,6 +390,16 @@
 
                                 <div class="col-sm-12">
                                     <div class="form-group">
+                                        <label>Google Analytics ID</label>
+                                        <input type="text"
+                                            class="form-control @error('google_analytics_id') is-invalid @enderror"
+                                            name="google_analytics_id"
+                                            value="{{ old('google_analytics_id', $data->google_analytics_id) }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
                                         <label>Meta Keywords</label>
                                         <input type="text"
                                             class="form-control @error('meta_keywords') is-invalid @enderror"

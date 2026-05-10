@@ -3,9 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\CompanyDetails;
+use App\Models\Faq;
+use App\Models\Gallery;
+use App\Models\Master;
+use App\Models\Post;
+use App\Models\Section;
+use App\Models\Service;
+use App\Models\Slider;
 use App\Models\Tenant;
+use App\Models\Testimonial;
 use DataTables;
+use Illuminate\Http\Request;
 
 class TenantController extends Controller
 {
@@ -35,6 +44,9 @@ class TenantController extends Controller
                             <a href="' . route('tenant.manage', $row->id) . '" class="btn btn-soft-primary btn-sm">
                                 <i class="ri-settings-3-line me-1"></i> Manage
                             </a>
+                            <button class="btn btn-soft-success btn-sm cloneBtn" data-id="' . $row->id . '">
+                                <i class="ri-file-copy-line"></i>
+                            </button>
                             <button class="btn btn-soft-secondary btn-sm" id="EditBtn" rid="' . $row->id . '">
                                 <i class="ri-pencil-fill"></i>
                             </button>
@@ -116,6 +128,76 @@ class TenantController extends Controller
         }
 
         return response()->json(['message' => 'Failed to update status.'], 500);
+    }
+
+    public function clone($id)
+    {
+        $original = Tenant::findOrFail($id);
+
+        $newTenant = $original->replicate();
+        $newTenant->name   = $original->name . ' (Copy)';
+        $newTenant->domain = 'copy-' . time() . '-' . $original->domain;
+        $newTenant->save();
+
+        $newId = $newTenant->id;
+        $oldId = $original->id;
+
+        $company = CompanyDetails::where('tenant_id', $oldId)->first();
+        if ($company) {
+            $newCompany = $company->replicate();
+            $newCompany->tenant_id = $newId;
+            $newCompany->save();
+        }
+
+        Master::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Slider::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Service::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Testimonial::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Gallery::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Post::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Faq::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        Section::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
+            $new = $row->replicate();
+            $new->tenant_id = $newId;
+            $new->save();
+        });
+
+        return response()->json(['message' => 'Tenant cloned successfully!'], 200);
     }
 
     public function manage($id)

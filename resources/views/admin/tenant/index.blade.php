@@ -98,6 +98,23 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '.cloneBtn', function () {
+        if (!confirm('Clone this tenant and all its data?')) return;
+        var id = $(this).data('id');
+        $.ajax({
+            url: '/admin/tenants/' + id + '/clone',
+            method: 'POST',
+            data: { _token: '{{ csrf_token() }}' },
+            success: function (res) {
+                showSuccess(res.message);
+                reloadTable('#tenantTable');
+            },
+            error: function (xhr) {
+                showError(xhr.responseJSON?.message ?? 'Failed to clone tenant.');
+            }
+        });
+    });
+
     $("#newBtn").click(function () {
         clearform();
         $("#newBtn").hide(100);

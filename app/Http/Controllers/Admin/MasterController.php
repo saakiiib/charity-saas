@@ -28,6 +28,11 @@ class MasterController extends Controller
                                         <i class="ri-pencil-fill me-2"></i>Edit
                                     </button>
                                 </li>
+                                <li>
+                                    <button class="dropdown-item CopyBtn" data-id="' . $row->id . '">
+                                        <i class="ri-file-copy-fill me-2"></i>Copy
+                                    </button>
+                                </li>
                                 <li class="dropdown-divider"></li>
                                 <li>
                                     <button class="dropdown-item deleteBtn"
@@ -66,19 +71,21 @@ class MasterController extends Controller
         $data->meta_description = $request->meta_description;
         $data->meta_keywords    = $request->meta_keywords;
 
-        // content JSON
-        if ($request->content_key) {
+        // content JSON - FIXED
+        if ($request->has('has_content_field')) {
             $content = [];
-            foreach ($request->content_key as $i => $key) {
-                if (!empty($key)) {
-                    $content[] = [
-                        'key'            => $key,
-                        'short_desc'     => $request->content_short_desc[$i] ?? null,
-                        'long_desc'      => $request->content_long_desc[$i] ?? null,
-                    ];
+            if ($request->has('content_key') && is_array($request->content_key)) {
+                foreach ($request->content_key as $i => $key) {
+                    if (!empty($key)) {
+                        $content[] = [
+                            'key'            => $key,
+                            'short_desc'     => $request->content_short_desc[$i] ?? null,
+                            'long_desc'      => $request->content_long_desc[$i] ?? null,
+                        ];
+                    }
                 }
             }
-            $data->content = $content;
+            $data->content = !empty($content) ? $content : null;
         }
 
         $this->handleImage($request, $data, 'image', 'image');
@@ -113,19 +120,21 @@ class MasterController extends Controller
         $data->meta_description = $request->meta_description;
         $data->meta_keywords    = $request->meta_keywords;
 
-        // content JSON
-        if ($request->content_key) {
+        // content JSON - FIXED
+        if ($request->has('has_content_field')) {
             $content = [];
-            foreach ($request->content_key as $i => $key) {
-                if (!empty($key)) {
-                    $content[] = [
-                        'key'        => $key,
-                        'short_desc' => $request->content_short_desc[$i] ?? null,
-                        'long_desc'  => $request->content_long_desc[$i] ?? null,
-                    ];
+            if ($request->has('content_key') && is_array($request->content_key)) {
+                foreach ($request->content_key as $i => $key) {
+                    if (!empty($key)) {
+                        $content[] = [
+                            'key'        => $key,
+                            'short_desc' => $request->content_short_desc[$i] ?? null,
+                            'long_desc'  => $request->content_long_desc[$i] ?? null,
+                        ];
+                    }
                 }
             }
-            $data->content = $content;
+            $data->content = !empty($content) ? $content : null;
         }
 
         $this->handleImage($request, $data, 'image', 'image');
@@ -147,6 +156,22 @@ class MasterController extends Controller
         }
         $data->delete();
         return response()->json(['message' => 'Master data deleted successfully.'], 200);
+    }
+
+    public function copy($id)
+    {
+        $original = Master::where('tenant_id', $this->tenantId())->findOrFail($id);
+        
+        $data = $original->replicate();
+        $data->name = $original->name . '_copy';
+        $data->created_at = now();
+        $data->updated_at = now();
+        $data->save();
+        
+        return response()->json([
+            'message' => 'Master data copied successfully.',
+            'data' => $data
+        ], 200);
     }
 
     private function handleImage(Request $request, Master $data, string $field, string $column)

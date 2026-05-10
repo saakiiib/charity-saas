@@ -56,7 +56,6 @@
     var bg = tile.style.backgroundImage || getComputedStyle(tile).backgroundImage;
     var m = /url\(["']?([^"')]+)["']?\)/.exec(bg);
     if(!m) return null;
-    // upgrade w/q for full-screen viewing
     return m[1].replace(/[?&]w=\d+/, '').replace(/[?&]q=\d+/, '') + (m[1].indexOf('?')>-1?'&':'?') + 'w=1800&q=85';
   }
   function captionOf(tile){

@@ -24,7 +24,7 @@
                                 <input type="text" class="form-control" id="title" name="title">
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 d-none">
                                 <label class="form-label">Video URL <small class="text-muted">(optional)</small></label>
                                 <input type="text" class="form-control" id="video" name="video" placeholder="https://youtube.com/...">
                             </div>
@@ -71,7 +71,7 @@
                                 <th>Sl</th>
                                 <th>Title</th>
                                 <th>Image</th>
-                                <th>Video</th>
+                                {{-- <th>Video</th> --}}
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -130,7 +130,7 @@ $(document).ready(function () {
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'title', name: 'title' },
             { data: 'image', name: 'image', orderable: false, searchable: false },
-            { data: 'video', name: 'video', orderable: false, searchable: false },
+            // { data: 'video', name: 'video', orderable: false, searchable: false },
             { data: 'status', name: 'status', orderable: false, searchable: false },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ]

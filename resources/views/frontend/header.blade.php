@@ -1,13 +1,18 @@
 <header class="site-header">
   <div class="container nav">
-    <a class="brand" href="index.html"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0' stop-color='%23ff7a59'/><stop offset='1' stop-color='%23c44569'/></linearGradient></defs><circle cx='32' cy='32' r='30' fill='url(%23g)'/><path d='M32 47s-13-8-13-19a8 8 0 0 1 13-6 8 8 0 0 1 13 6c0 11-13 19-13 19z' fill='%23fff'/></svg>" alt="BrightHope logo" class="brand-logo"/><span class="brand-name">BrightHope</span></a>
+    <a class="brand" href="{{ url('/') }}">
+      @if($company?->company_logo)
+        <img src="{{ asset('uploads/company/' . $company->company_logo) }}" alt="{{ $company->company_name }} logo" class="brand-logo">
+      @endif
+      <span class="brand-name">{{ $company?->company_name ?? config('app.name') }}</span>
+    </a>
     <nav class="nav-links">
-      <a href="index.html" class="active">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="updates.html">Updates</a>
-      <a href="contact.html">Contact</a>
+      <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a>
+      <a href="{{ url('/about') }}" class="{{ request()->is('about') ? 'active' : '' }}">About</a>
+      <a href="{{ url('/services') }}" class="{{ request()->is('services') ? 'active' : '' }}">Services</a>
+      <a href="{{ url('/updates') }}" class="{{ request()->is('updates') ? 'active' : '' }}">Updates</a>
+      <a href="{{ url('/contact') }}" class="{{ request()->is('contact') ? 'active' : '' }}">Contact</a>
     </nav>
-    <a class="btn btn-primary nav-cta" href="#donate">Donate</a>
+    <a class="btn btn-primary nav-cta" href="https://tevini.co.uk">Donate</a>
   </div>
 </header>

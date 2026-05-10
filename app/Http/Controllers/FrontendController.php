@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Master;
-use App\Models\Service;
-use App\Models\Post;
-use App\Models\Gallery;
-use App\Models\Faq;
-use App\Models\Contact;
 use App\Models\CompanyDetails;
+use App\Models\Contact;
+use App\Models\Faq;
+use App\Models\Gallery;
+use App\Models\Master;
+use App\Models\Post;
+use App\Models\Service;
 use App\Models\Slider;
+use App\Models\Testimonial;
+use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
@@ -39,10 +40,16 @@ class FrontendController extends Controller
         $company = $this->getCompany($tenant->id);
         $masters = $this->getMaster($tenant->id, 'home');
         $sliders = Slider::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
-        $services = Service::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->take(6)->get();
-        $posts    = Post::where('tenant_id', $tenant->id)->where('status', 1)->latest()->take(3)->get();
+        $difference = $masters->firstWhere('name', 'difference');
+        $stats = $masters->firstWhere('name', 'stats');
+        $latestPost = Post::where('tenant_id', $tenant->id)->where('status', 1)->latest()->first();
+        $testimonialsSection = $masters->firstWhere('name', 'testimonials');
+        $testimonials = Testimonial::where('tenant_id', $tenant->id)->where('status', 1)->latest()->get();
+        $galleries = Gallery::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
+        $gallerySection = $masters->firstWhere('name', 'gallery');
+        $cta = $masters->firstWhere('name', 'cta');
 
-        return view('frontend.index', compact('tenant', 'company', 'masters', 'sliders', 'services', 'posts'));
+        return view('frontend.index', compact('tenant', 'company', 'masters', 'sliders', 'difference', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection', 'cta'));
     }
 
     public function about()

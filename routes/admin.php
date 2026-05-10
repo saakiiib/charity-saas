@@ -34,6 +34,7 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::post('/tenants-update', [TenantController::class, 'update'])->name('tenant.update');
     Route::delete('/tenants/{id}', [TenantController::class, 'destroy'])->name('tenant.delete');
     Route::post('/tenants-status', [TenantController::class, 'toggleStatus'])->name('tenant.status');
+    Route::post('/tenants/{id}/clone', [TenantController::class, 'clone'])->name('tenant.clone');
     Route::get('/tenants/{id}/manage', [TenantController::class, 'manage'])->name('tenant.manage');
     Route::get('/tenants/manage/exit', [TenantController::class, 'exit'])->name('tenant.manage.exit');
 
@@ -51,6 +52,7 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::get('/master/{id}/edit', [MasterController::class, 'edit'])->name('master.edit');
     Route::post('/master-update', [MasterController::class, 'update'])->name('master.update');
     Route::delete('/master/{id}', [MasterController::class, 'destroy'])->name('master.delete');
+    Route::post('/master/{id}/copy', [MasterController::class, 'copy'])->name('master.copy');
 
     // Section
     Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');

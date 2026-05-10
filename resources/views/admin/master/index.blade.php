@@ -227,12 +227,22 @@ $(document).ready(function () {
         if ($('#image2')[0].files[0])     form_data.append('image2',     $('#image2')[0].files[0]);
         if ($('#meta_image')[0].files[0]) form_data.append('meta_image', $('#meta_image')[0].files[0]);
 
-        // Content rows
+        // Content rows - FIXED
+        var hasContent = false;
         $('input[name="content_key[]"]').each(function (i) {
-            form_data.append('content_key[]',        $(this).val());
-            form_data.append('content_short_desc[]', $($('textarea[name="content_short_desc[]"]')[i]).val());
-            form_data.append('content_long_desc[]',  $($('textarea[name="content_long_desc[]"]')[i]).val());
+            var key = $(this).val();
+            var shortDesc = $($('textarea[name="content_short_desc[]"]')[i]).val();
+            var longDesc = $($('textarea[name="content_long_desc[]"]')[i]).val();
+            
+            form_data.append('content_key[]', key);
+            form_data.append('content_short_desc[]', shortDesc);
+            form_data.append('content_long_desc[]', longDesc);
+            
+            if (key) hasContent = true;
         });
+        
+        // Add a flag to indicate if we should process content
+        form_data.append('has_content_field', '1');
 
         var isUpdate = $('#codeid').val() ? true : false;
         var url = isUpdate ? "{{ route('master.update') }}" : "{{ route('master.store') }}";
@@ -263,7 +273,7 @@ $(document).ready(function () {
             $('#cardTitle').text('Update Master');
             $('#codeid').val(res.id);
             $('#page').val(res.page).prop('readonly', true);
-            $('#name').val(res.name).prop('readonly', true);
+            $('#name').val(res.name);
             $('#short_title').val(res.short_title);
             $('#long_title').val(res.long_title);
             $('#short_description').summernote('code', res.short_description ?? '');
@@ -296,7 +306,6 @@ $(document).ready(function () {
         $('#addBtn').text('Create');
         $('#cardTitle').text('Add New');
         $('#page').prop('readonly', false);
-        $('#name').prop('readonly', false);
         $('#short_description').summernote('code', '');
         $('#long_description').summernote('code', '');
         $('#previewImage').attr('src', '#').hide();
@@ -304,6 +313,25 @@ $(document).ready(function () {
         $('#previewMetaImage').attr('src', '#').hide();
         $('#contentRows').empty();
     }
+
+    // Copy
+    $(document).on('click', '.CopyBtn', function () {
+        var id = $(this).data('id');
+        
+        if (confirm('Are you sure you want to copy this record?')) {
+            $.ajax({
+                url: "{{ url('admin/master') }}/" + id + "/copy",
+                type: 'POST',
+                success: function (res) {
+                    showSuccess(res.message);
+                    table.ajax.reload(null, false);
+                },
+                error: function (xhr) {
+                    showError(xhr.responseJSON?.message ?? 'Failed to copy!');
+                }
+            });
+        }
+    });
 
 });
 </script>

@@ -47,7 +47,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="form-label">Slider Link</label>
+                                    <label class="form-label">Slider Link 2</label>
                                     <input type="text" class="form-control" id="link2" name="link2"
                                         placeholder="Enter link 2 (optional)">
                                 </div>

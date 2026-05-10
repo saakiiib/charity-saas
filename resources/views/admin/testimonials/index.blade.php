@@ -29,12 +29,12 @@
                                 <input type="text" class="form-control" id="designation" name="designation">
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 d-none">
                                 <label class="form-label">Company</label>
                                 <input type="text" class="form-control" id="company" name="company">
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 d-none">
                                 <label class="form-label">Photo</label>
                                 <input type="file" class="form-control" id="image" name="image" accept="image/*">
                                 <img id="previewImage" src="#" alt="" class="img-thumbnail rounded-circle mt-2"
@@ -70,8 +70,8 @@
                         <th>Sl</th>
                         <th>Name</th>
                         <th>Designation</th>
-                        <th>Company</th>
-                        <th>Photo</th>
+                        {{-- <th>Company</th>
+                        <th>Photo</th> --}}
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -100,8 +100,8 @@ $(document).ready(function () {
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'name', name: 'name' },
             { data: 'designation', name: 'designation' },
-            { data: 'company', name: 'company' },
-            { data: 'image', name: 'image', orderable: false, searchable: false },
+            // { data: 'company', name: 'company' },
+            // { data: 'image', name: 'image', orderable: false, searchable: false },
             { data: 'status', name: 'status', orderable: false, searchable: false },
             { data: 'action', name: 'action', orderable: false, searchable: false }
         ]

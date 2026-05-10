@@ -87,9 +87,9 @@
 
     @include('frontend.footer')
 
-    <script src="{{ asset('resources/frontend/js/shared.js') }}"></script>
-
     @include('frontend.extra')
+
+    <script src="{{ asset('resources/frontend/js/shared.js') }}"></script>
 
     @yield('script')
 
