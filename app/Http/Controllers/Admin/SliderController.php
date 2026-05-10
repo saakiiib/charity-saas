@@ -77,8 +77,8 @@ class SliderController extends Controller
         $data->title = $request->title;
         $data->sub_title = $request->sub_title;
         $data->description = $request->description;
-        $data->link = $request->link;
-        $data->created_by = auth()->id();
+        $data->link1 = $request->link1;
+        $data->link2 = $request->link2;
 
         $lastSerial = Slider::max('serial');
         $data->serial = $lastSerial ? $lastSerial + 1 : 1;
@@ -117,8 +117,8 @@ class SliderController extends Controller
         $slider->title = $request->title;
         $slider->sub_title = $request->sub_title;
         $slider->description = $request->description;
-        $slider->link = $request->link;
-        $slider->updated_by = auth()->id();
+        $slider->link1 = $request->link1;
+        $slider->link2 = $request->link2;
 
         if ($request->hasFile('image')) {
             if($slider->image && file_exists(public_path('uploads/slider/'.$slider->image))){

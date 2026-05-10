@@ -42,8 +42,14 @@
 
                                 <div class="col-md-12">
                                     <label class="form-label">Slider Link</label>
-                                    <input type="text" class="form-control" id="link" name="link"
+                                    <input type="text" class="form-control" id="link1" name="link1"
                                         placeholder="Enter link (optional)">
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Slider Link</label>
+                                    <input type="text" class="form-control" id="link2" name="link2"
+                                        placeholder="Enter link 2 (optional)">
                                 </div>
 
                                 <div class="col-md-6">
@@ -239,7 +245,8 @@
                 form_data.append("title", $("#title").val());
                 form_data.append("sub_title", $("#sub_title").val());
                 form_data.append("description", $("#description").val());
-                form_data.append("link", $("#link").val());
+                form_data.append("link1", $("#link1").val());
+                form_data.append("link2", $("#link2").val());
                 var featureImgInput = document.getElementById('image');
                 if (featureImgInput.files && featureImgInput.files[0]) form_data.append("image",
                     featureImgInput.files[0]);
@@ -302,7 +309,8 @@
                 $("#title").val(data.title);
                 $("#sub_title").val(data.sub_title);
                 $("#description").val(data.description);
-                $("#link").val(data.link);
+                $("#link1").val(data.link1);
+                $("#link2").val(data.link2);
                 $("#codeid").val(data.id);
                 $("#addBtn").val('Update').html('Update');
                 $("#addThisFormContainer").show();

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->string('sub_title')->nullable();
             $table->text('description')->nullable(); 
-            $table->string('link')->nullable(); 
+            $table->string('link1')->nullable(); 
+            $table->string('link2')->nullable(); 
             $table->string('image')->nullable(); 
             $table->boolean('status')->default(1);
             $table->boolean('serial')->nullable();
