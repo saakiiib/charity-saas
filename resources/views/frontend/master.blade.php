@@ -53,15 +53,15 @@
 
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "Organization",
+        "@@context": "https://schema.org",
+        "@@type": "Organization",
         "name": "{{ $company?->company_name ?? config('app.name') }}",
         "url": "{{ url('/') }}",
         "logo": "{{ $company?->company_logo ? asset('uploads/company/' . $company->company_logo) : '' }}",
         "telephone": "{{ $company?->phone1 ?? '' }}",
         "email": "{{ $company?->email1 ?? '' }}",
         "address": {
-            "@type": "PostalAddress",
+            "@@type": "PostalAddress",
             "streetAddress": "{{ $company?->address1 ?? '' }}",
             "addressCountry": "GB"
         }
@@ -91,7 +91,7 @@
 
     @include('frontend.extra')
 
-    @stack('script')
+    @yield('script')
 
 </body>
 </html>
