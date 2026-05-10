@@ -99,6 +99,18 @@
 
     <script src="{{ asset('resources/backend/js/custom.js') }}"></script>
 
+    @if(session('success'))
+    <script>
+        showSuccess(@json(session('success')));
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        showError(@json(session('error')));
+    </script>
+    @endif
+
     @yield('script')
 </body>
 

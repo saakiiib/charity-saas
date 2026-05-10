@@ -34,6 +34,14 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('theme.index') }}"
+                        class="nav-link {{ Route::is('theme.index') ? 'active' : '' }}">
+                            <i class="ri-palette-line"></i>
+                            <span>Theme Settings</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('master.index') }}"
                            class="nav-link {{ Route::is('master.index') ? 'active' : '' }}">
                             <i class="ri-file-list-3-line"></i>

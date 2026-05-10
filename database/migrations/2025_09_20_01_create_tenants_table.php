@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('domain')->unique();
+            $table->string('theme')->default('theme-1');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

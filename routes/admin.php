@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,10 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     // Company Details
     Route::get('/company-details', [CompanyDetailsController::class, 'index'])->name('companyDetails.index');
     Route::post('/company-details', [CompanyDetailsController::class, 'update'])->name('companyDetails.update');
+
+    // Theme
+    Route::get('/theme', [ThemeController::class, 'index'])->name('theme.index');
+    Route::post('/theme', [ThemeController::class, 'update'])->name('theme.update');
 
     // Master
     Route::get('/master', [MasterController::class, 'index'])->name('master.index');

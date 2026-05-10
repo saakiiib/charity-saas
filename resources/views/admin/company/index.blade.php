@@ -6,20 +6,6 @@
         <div class="row justify-content-center">
             <div class="col-xl-12">
 
-                @if (session()->has('success'))
-                    <div class="alert alert-success pt-3 mb-3" id="successMessage">{{ session()->get('success') }}</div>
-                @endif
-
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title mb-0 flex-grow-1">Comapny Details</h3>
