@@ -47,9 +47,8 @@ class FrontendController extends Controller
         $testimonials = Testimonial::where('tenant_id', $tenant->id)->where('status', 1)->latest()->get();
         $galleries = Gallery::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
         $gallerySection = $masters->firstWhere('name', 'gallery');
-        $cta = $masters->firstWhere('name', 'cta');
 
-        return view('frontend.index', compact('tenant', 'company', 'masters', 'sliders', 'difference', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection', 'cta'));
+        return view('frontend.index', compact('sliders', 'difference', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection'));
     }
 
     public function about()
@@ -57,8 +56,12 @@ class FrontendController extends Controller
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
         $masters = $this->getMaster($tenant->id, 'about');
+        $hero    = $masters->firstWhere('name', 'hero');
+        $story   = $masters->firstWhere('name', 'story');
+        $beliefs = $masters->firstWhere('name', 'beliefs');
+        $team    = $masters->firstWhere('name', 'team');
 
-        return view('frontend.about', compact('tenant', 'company', 'masters'));
+        return view('frontend.about', compact('hero', 'story', 'beliefs', 'team'));
     }
 
     public function services()
@@ -66,18 +69,23 @@ class FrontendController extends Controller
         $tenant   = $this->getTenant();
         $company  = $this->getCompany($tenant->id);
         $masters  = $this->getMaster($tenant->id, 'services');
+        $hero     = $masters->firstWhere('name', 'hero');
+        $stats    = $masters->firstWhere('name', 'stats');
         $services = Service::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
 
-        return view('frontend.services', compact('tenant', 'company', 'masters', 'services'));
+        return view('frontend.services', compact('hero', 'stats', 'services'));
     }
 
     public function serviceDetail($slug)
     {
-        $tenant  = $this->getTenant();
-        $company = $this->getCompany($tenant->id);
-        $service = Service::where('tenant_id', $tenant->id)->where('slug', $slug)->where('status', 1)->firstOrFail();
+        $tenant   = $this->getTenant();
+        $company  = $this->getCompany($tenant->id);
+        $service  = Service::where('tenant_id', $tenant->id)->where('slug', $slug)->where('status', 1)->firstOrFail();
+        $masters  = $this->getMaster($tenant->id, 'services');
+        $hero     = $masters->firstWhere('name', 'hero');
+        $services = Service::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
 
-        return view('frontend.service_detail', compact('tenant', 'company', 'service'));
+        return view('frontend.service_detail', compact('tenant', 'company', 'service', 'hero', 'services'));
     }
 
     public function gallery()
@@ -90,23 +98,27 @@ class FrontendController extends Controller
         return view('frontend.gallery', compact('tenant', 'company', 'masters', 'galleries'));
     }
 
-    public function blog()
+    public function updates()
     {
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
-        $masters = $this->getMaster($tenant->id, 'blog');
-        $posts   = Post::where('tenant_id', $tenant->id)->where('status', 1)->latest()->paginate(12);
+        $masters = $this->getMaster($tenant->id, 'updates');
+        $hero    = $masters->firstWhere('name', 'hero');
+        $posts   = Post::where('tenant_id', $tenant->id)->where('status', 1)->latest()->take(12)->get();
 
-        return view('frontend.blogs', compact('tenant', 'company', 'masters', 'posts'));
+        return view('frontend.updates', compact('hero', 'posts'));
     }
 
-    public function blogDetail($slug)
+    public function updatesDetail($slug)
     {
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
+        $masters = $this->getMaster($tenant->id, 'updates');
+        $hero    = $masters->firstWhere('name', 'hero');
         $post    = Post::where('tenant_id', $tenant->id)->where('slug', $slug)->where('status', 1)->firstOrFail();
+        $recent  = Post::where('tenant_id', $tenant->id)->where('status', 1)->where('id', '!=', $post->id)->latest()->take(10)->get();
 
-        return view('frontend.blog_detail', compact('tenant', 'company', 'post'));
+        return view('frontend.update_detail', compact('tenant', 'company', 'hero', 'post', 'recent'));
     }
 
     public function faq()
@@ -124,8 +136,9 @@ class FrontendController extends Controller
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
         $masters = $this->getMaster($tenant->id, 'contact');
+        $hero    = $masters->firstWhere('name', 'hero');
 
-        return view('frontend.contact', compact('tenant', 'company', 'masters'));
+        return view('frontend.contact', compact('tenant', 'company', 'hero'));
     }
 
     public function contactSubmit(Request $request)
