@@ -111,6 +111,69 @@ class TenantController extends Controller
     {
         $data = Tenant::findOrFail($id);
 
+        $company = CompanyDetails::where('tenant_id', $id)->first();
+        if ($company) {
+            foreach (['fav_icon', 'company_logo', 'footer_logo'] as $field) {
+                if ($company->$field && file_exists(public_path('uploads/company/' . $company->$field))) {
+                    @unlink(public_path('uploads/company/' . $company->$field));
+                }
+            }
+            if ($company->meta_image && file_exists(public_path('uploads/company/meta/' . $company->meta_image))) {
+                @unlink(public_path('uploads/company/meta/' . $company->meta_image));
+            }
+            $company->delete();
+        }
+
+        Master::where('tenant_id', $id)->each(function ($row) {
+            foreach (['image', 'image2'] as $field) {
+                if ($row->$field && file_exists(public_path('uploads/masters/' . $row->$field))) {
+                    @unlink(public_path('uploads/masters/' . $row->$field));
+                }
+            }
+            if ($row->meta_image && file_exists(public_path('uploads/meta_image/' . $row->meta_image))) {
+                @unlink(public_path('uploads/meta_image/' . $row->meta_image));
+            }
+            $row->delete();
+        });
+
+        Slider::where('tenant_id', $id)->each(function ($row) {
+            if ($row->image && file_exists(public_path('uploads/slider/' . $row->image))) {
+                @unlink(public_path('uploads/slider/' . $row->image));
+            }
+            $row->delete();
+        });
+
+        Service::where('tenant_id', $id)->each(function ($row) {
+            if ($row->image && file_exists(public_path('uploads/services/' . $row->image))) {
+                @unlink(public_path('uploads/services/' . $row->image));
+            }
+            $row->delete();
+        });
+
+        Testimonial::where('tenant_id', $id)->each(function ($row) {
+            if ($row->image && file_exists(public_path('uploads/testimonials/' . $row->image))) {
+                @unlink(public_path('uploads/testimonials/' . $row->image));
+            }
+            $row->delete();
+        });
+
+        Gallery::where('tenant_id', $id)->each(function ($row) {
+            if ($row->image && file_exists(public_path('uploads/galleries/' . $row->image))) {
+                @unlink(public_path('uploads/galleries/' . $row->image));
+            }
+            $row->delete();
+        });
+
+        Post::where('tenant_id', $id)->each(function ($row) {
+            if ($row->image && file_exists(public_path('uploads/posts/' . $row->image))) {
+                @unlink(public_path('uploads/posts/' . $row->image));
+            }
+            $row->delete();
+        });
+
+        Faq::where('tenant_id', $id)->delete();
+        Section::where('tenant_id', $id)->delete();
+
         if ($data->delete()) {
             return response()->json(['message' => 'Charity deleted successfully.'], 200);
         }

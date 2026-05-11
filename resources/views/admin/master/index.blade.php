@@ -272,7 +272,7 @@ $(document).ready(function () {
         $.get("{{ url('admin/master') }}/" + id + "/edit", function (res) {
             $('#cardTitle').text('Update Master');
             $('#codeid').val(res.id);
-            $('#page').val(res.page).prop('readonly', true);
+            $('#page').val(res.page);
             $('#name').val(res.name);
             $('#short_title').val(res.short_title);
             $('#long_title').val(res.long_title);
@@ -305,7 +305,6 @@ $(document).ready(function () {
         $('#codeid').val('');
         $('#addBtn').text('Create');
         $('#cardTitle').text('Add New');
-        $('#page').prop('readonly', false);
         $('#short_description').summernote('code', '');
         $('#long_description').summernote('code', '');
         $('#previewImage').attr('src', '#').hide();

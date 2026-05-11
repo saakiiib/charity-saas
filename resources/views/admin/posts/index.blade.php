@@ -1,9 +1,9 @@
 @extends('admin.pages.master')
-@section('title', 'Posts')
+@section('title', 'Updates')
 @section('content')
 
 <div class="container-fluid mb-3">
-    <button type="button" class="btn btn-primary" id="newBtn">Add New Post</button>
+    <button type="button" class="btn btn-primary" id="newBtn">Add New Update</button>
 </div>
 
 <div class="container-fluid" id="addThisFormContainer" style="display:none;">
@@ -11,7 +11,7 @@
         <div class="col-xl-10">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0" id="cardTitle">Add New Post</h4>
+                    <h4 class="card-title mb-0" id="cardTitle">Add New Update</h4>
                 </div>
                 <div class="card-body">
                     <form id="createThisForm">
@@ -56,7 +56,7 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title mb-0">Posts</h4>
+            <h4 class="card-title mb-0">Updates</h4>
         </div>
         <div class="card-body">
             <table id="postTable" class="table table-bordered table-striped">
@@ -173,7 +173,7 @@ $(document).ready(function () {
         $('#createThisForm')[0].reset();
         $('#codeid').val('');
         $('#addBtn').text('Create');
-        $('#cardTitle').text('Add New Post');
+        $('#cardTitle').text('Add New Update');
         $('#previewImage').attr('src', '#').hide();
         $('#long_description').summernote('code', '');
     }
