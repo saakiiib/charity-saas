@@ -205,55 +205,76 @@ class TenantController extends Controller
         $newId = $newTenant->id;
         $oldId = $original->id;
 
+        // Company Details
         $company = CompanyDetails::where('tenant_id', $oldId)->first();
         if ($company) {
             $newCompany = $company->replicate();
             $newCompany->tenant_id = $newId;
+            $newCompany->fav_icon     = $this->copyFile($company->fav_icon, 'uploads/company');
+            $newCompany->company_logo = $this->copyFile($company->company_logo, 'uploads/company');
+            $newCompany->footer_logo  = $this->copyFile($company->footer_logo, 'uploads/company');
+            $newCompany->meta_image   = $this->copyFile($company->meta_image, 'uploads/company/meta');
             $newCompany->save();
         }
 
+        // Masters
         Master::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
+            $new->image      = $this->copyFile($row->image, 'uploads/masters');
+            $new->image2     = $this->copyFile($row->image2, 'uploads/masters');
+            $new->meta_image = $this->copyFile($row->meta_image, 'uploads/meta_image');
             $new->save();
         });
 
+        // Sliders
         Slider::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
+            $new->image = $this->copyFile($row->image, 'uploads/slider');
             $new->save();
         });
 
+        // Services
         Service::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
+            $new->image = $this->copyFile($row->image, 'uploads/services');
             $new->save();
         });
 
+        // Testimonials
         Testimonial::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
+            $new->image = $this->copyFile($row->image, 'uploads/testimonials');
             $new->save();
         });
 
+        // Gallery
         Gallery::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
+            $new->image = $this->copyFile($row->image, 'uploads/galleries');
             $new->save();
         });
 
+        // Posts
         Post::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
+            $new->image = $this->copyFile($row->image, 'uploads/posts');
             $new->save();
         });
 
+        // Faqs
         Faq::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
             $new->save();
         });
 
+        // Sections
         Section::where('tenant_id', $oldId)->each(function ($row) use ($newId) {
             $new = $row->replicate();
             $new->tenant_id = $newId;
@@ -261,6 +282,26 @@ class TenantController extends Controller
         });
 
         return response()->json(['message' => 'Tenant cloned successfully!'], 200);
+    }
+
+    private function copyFile($filename, $folder)
+    {
+        if (!$filename) return null;
+
+        $source = public_path($folder . '/' . $filename);
+        if (!file_exists($source)) return null;
+
+        $ext     = pathinfo($filename, PATHINFO_EXTENSION);
+        $newName = mt_rand(10000000, 99999999) . '.' . $ext;
+        $dest    = public_path($folder . '/' . $newName);
+
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true);
+        }
+
+        copy($source, $dest);
+
+        return $newName;
     }
 
     public function manage($id)

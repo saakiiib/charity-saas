@@ -161,17 +161,40 @@ class MasterController extends Controller
     public function copy($id)
     {
         $original = Master::where('tenant_id', $this->tenantId())->findOrFail($id);
-        
+
         $data = $original->replicate();
-        $data->name = $original->name . '_copy';
+        $data->name      = $original->name . '_copy';
+        $data->image     = $this->copyFile($original->image, 'uploads/masters');
+        $data->image2    = $this->copyFile($original->image2, 'uploads/masters');
+        $data->meta_image = $this->copyFile($original->meta_image, 'uploads/meta_image');
         $data->created_at = now();
         $data->updated_at = now();
         $data->save();
-        
+
         return response()->json([
             'message' => 'Master data copied successfully.',
             'data' => $data
         ], 200);
+    }
+
+    private function copyFile($filename, $folder)
+    {
+        if (!$filename) return null;
+
+        $source = public_path($folder . '/' . $filename);
+        if (!file_exists($source)) return null;
+
+        $ext     = pathinfo($filename, PATHINFO_EXTENSION);
+        $newName = mt_rand(10000000, 99999999) . '.' . $ext;
+        $dest    = public_path($folder . '/' . $newName);
+
+        if (!file_exists(public_path($folder))) {
+            mkdir(public_path($folder), 0755, true);
+        }
+
+        copy($source, $dest);
+
+        return $newName;
     }
 
     private function handleImage(Request $request, Master $data, string $field, string $column)
