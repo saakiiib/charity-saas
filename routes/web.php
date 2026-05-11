@@ -47,6 +47,10 @@ Route::get('/updates', [FrontendController::class, 'updates'])->name('updates');
 
 Route::get('/updates/{slug}', [FrontendController::class, 'updatesDetail'])->name('updates.detail');
 
+Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->name('privacy.policy');
+
+Route::get('/terms-and-conditions', [FrontendController::class, 'termsAndConditions'])->name('terms.and.conditions');
+
 Route::get('/faq', [FrontendController::class, 'faq'])->name('faq');
 
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');

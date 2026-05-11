@@ -121,14 +121,35 @@ class FrontendController extends Controller
         return view('frontend.update_detail', compact('tenant', 'company', 'hero', 'post', 'recent'));
     }
 
+    public function privacyPolicy()
+    {
+        $tenant  = $this->getTenant();
+        $company = $this->getCompany($tenant->id);
+        $masters = $this->getMaster($tenant->id, 'other');
+        $hero    = $masters->firstWhere('name', 'hero');
+
+        return view('frontend.privacy_policy', compact('tenant', 'company', 'hero'));
+    }
+
+    public function termsAndConditions()
+    {
+        $tenant  = $this->getTenant();
+        $company = $this->getCompany($tenant->id);
+        $masters = $this->getMaster($tenant->id, 'other');
+        $hero    = $masters->firstWhere('name', 'hero');
+
+        return view('frontend.terms_and_conditions', compact('tenant', 'company', 'hero'));
+    }
+
     public function faq()
     {
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
-        $masters = $this->getMaster($tenant->id, 'faq');
+        $masters = $this->getMaster($tenant->id, 'other');
+        $hero    = $masters->firstWhere('name', 'hero');
         $faqs    = Faq::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
 
-        return view('frontend.faq', compact('tenant', 'company', 'masters', 'faqs'));
+        return view('frontend.faq', compact('tenant', 'company', 'hero', 'faqs'));
     }
 
     public function contact()

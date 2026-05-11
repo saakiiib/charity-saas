@@ -2,7 +2,7 @@
 
 /* BRAND LOGO */
 .brand{display:inline-flex;align-items:center;gap:10px}
-.brand-logo{width:50px;height:50px;border-radius:8px;display:block;flex:0 0 auto;
+.brand-logo{width:34px;height:34px;border-radius:8px;display:block;flex:0 0 auto;
   box-shadow:0 4px 14px rgba(0,0,0,.18);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .brand:hover .brand-logo{transform:rotate(-6deg) scale(1.05)}
 .brand-name{font-family:var(--font-head);font-weight:700;letter-spacing:var(--brand-track,0)}
@@ -158,3 +158,307 @@ a,button,.btn{transition:color .3s,background-color .3s,border-color .3s,transfo
 
 /* prevent page scroll when open */
 body.lb-open{overflow:hidden}
+
+/* ===================================================================
+   FOOTER REDESIGN — distinct from CTA, polished, theme-adaptive
+   =================================================================== */
+.site-footer{
+  --foot-ink: #e9ecf2;
+  --foot-ink-dim: rgba(233,236,242,.62);
+  --foot-surface: #0e1117;
+  --foot-surface-2: #161a23;
+  --foot-line: rgba(255,255,255,.08);
+  --foot-accent: var(--accent, #ff7a59);
+  background:
+    radial-gradient(900px 360px at 12% 0%, color-mix(in oklab, var(--foot-accent) 14%, transparent), transparent 70%),
+    radial-gradient(700px 320px at 88% 100%, color-mix(in oklab, var(--foot-accent) 10%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--foot-surface) 0%, var(--foot-surface-2) 100%) !important;
+  color: var(--foot-ink) !important;
+  padding: 0 !important;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.site-footer::before{
+  content:""; position:absolute; inset:0 0 auto 0; height:1px;
+  background:linear-gradient(90deg, transparent, color-mix(in oklab, var(--foot-accent) 70%, #fff), transparent);
+  opacity:.55;
+}
+.site-footer .footer-top{ padding: 72px 0 44px; }
+.site-footer .foot{
+  display:grid; grid-template-columns: 1.1fr 2fr; gap: 56px; align-items:start;
+}
+@media (max-width: 900px){ .site-footer .foot{ grid-template-columns: 1fr; gap: 36px; } }
+
+.site-footer .foot-brand .brand-name{ color:#fff !important; }
+.site-footer .foot-tag{ color: var(--foot-ink-dim); margin: 16px 0 22px; max-width: 38ch; line-height:1.6; }
+
+/* social icons */
+.site-footer .socials{ display:flex; gap:10px; flex-wrap:wrap; }
+.site-footer .soc{
+  width:42px; height:42px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--foot-line);
+  color:#fff; text-decoration:none;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), background .3s, color .3s, border-color .3s, box-shadow .35s;
+}
+.site-footer .soc svg{ width:18px; height:18px; }
+.site-footer .soc:hover{
+  background: var(--foot-accent);
+  border-color: var(--foot-accent);
+  color:#fff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -10px color-mix(in oklab, var(--foot-accent) 70%, transparent);
+}
+
+/* columns */
+.site-footer .foot-cols{
+  display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 32px;
+}
+@media (max-width: 760px){ .site-footer .foot-cols{ grid-template-columns: repeat(2, 1fr); gap:28px; } }
+@media (max-width: 420px){ .site-footer .foot-cols{ grid-template-columns: 1fr; } }
+.site-footer .foot-cols h4{
+  color:#fff; font-family: var(--font-head, inherit);
+  font-size: .82rem; letter-spacing: .14em; text-transform: uppercase;
+  margin: 0 0 14px; font-weight: 700;
+  position:relative; padding-bottom:10px;
+}
+.site-footer .foot-cols h4::after{
+  content:""; position:absolute; left:0; bottom:0; width:22px; height:2px;
+  background: var(--foot-accent); border-radius:2px;
+}
+.site-footer .foot-cols p, .site-footer .foot-cols a{
+  color: var(--foot-ink-dim); text-decoration:none; line-height:1.85; display:block;
+  font-size:.95rem; transition: color .25s, transform .25s;
+}
+.site-footer .foot-cols a:hover{ color:#fff; transform: translateX(3px); }
+
+/* newsletter */
+.site-footer .news-form{
+  display:flex; align-items:center; gap:8px;
+  background: rgba(255,255,255,.06);
+  border:1px solid var(--foot-line);
+  border-radius: 999px; padding:5px 5px 5px 16px; margin-top:10px;
+  transition: border-color .3s, background .3s;
+}
+.site-footer .news-form:focus-within{ border-color: var(--foot-accent); background: rgba(255,255,255,.1); }
+.site-footer .news-form input{
+  flex:1; background:transparent; border:none; outline:none; color:#fff;
+  font-size:.92rem; padding:8px 0; min-width:0;
+}
+.site-footer .news-form input::placeholder{ color: rgba(255,255,255,.45); }
+.site-footer .news-form button{
+  width:36px; height:36px; border-radius:50%; border:none; cursor:pointer;
+  background: var(--foot-accent); color:#fff;
+  display:inline-flex; align-items:center; justify-content:center;
+  transition: transform .3s, box-shadow .3s, background .3s;
+}
+.site-footer .news-form button:hover{ transform: translateX(2px) scale(1.05); box-shadow: 0 10px 24px -8px color-mix(in oklab, var(--foot-accent) 70%, transparent); }
+
+/* bottom bar */
+.site-footer .footer-bottom{
+  border-top:1px solid var(--foot-line);
+  padding: 18px 0;
+  background: rgba(0,0,0,.25);
+}
+.site-footer .foot-bottom-row{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+}
+.site-footer .foot-bottom-row small{ color: var(--foot-ink-dim); font-size:.82rem; }
+.site-footer .foot-bottom-row a{ color: var(--foot-ink-dim); text-decoration:none; transition:color .25s; }
+.site-footer .foot-bottom-row a:hover,
+.site-footer .foot-bottom-row a.active{
+    color: #fff;
+}
+
+/* hide legacy elements if a theme rendered them */
+.site-footer .copyright{ display:none; }
+
+/* ===================================================================
+   FAQ — accordion using <details>, theme-adaptive
+   =================================================================== */
+.faq-section{ padding: clamp(70px, 10vw, 110px) 0; }
+.faq{ max-width: 820px; margin: 28px auto 0; display:flex; flex-direction:column; gap:14px; }
+.faq-item{
+  background: var(--card, #fff);
+  border: 1px solid color-mix(in oklab, var(--text, #111) 8%, transparent);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px -14px rgba(0,0,0,.2);
+  transition: border-color .35s, box-shadow .4s, transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.faq-item:hover{ transform: translateY(-2px); box-shadow: 0 16px 38px -22px rgba(0,0,0,.28); }
+.faq-item[open]{
+  border-color: color-mix(in oklab, var(--accent, #ff7a59) 55%, transparent);
+  box-shadow: 0 18px 44px -26px color-mix(in oklab, var(--accent, #ff7a59) 60%, transparent);
+}
+.faq-item summary{
+  list-style: none; cursor: pointer;
+  display:flex; align-items:center; justify-content:space-between; gap:18px;
+  padding: 20px 24px;
+  font-family: var(--font-head, inherit);
+  font-weight: 600; font-size: 1.02rem;
+  color: var(--text, #111);
+  transition: color .3s;
+}
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary:hover{ color: var(--accent, #ff7a59); }
+.faq-ico{
+  position:relative; width:22px; height:22px; flex:0 0 auto; display:inline-block;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.faq-ico::before, .faq-ico::after{
+  content:""; position:absolute; left:50%; top:50%; background: currentColor; border-radius:2px;
+}
+.faq-ico::before{ width:14px; height:2px; transform: translate(-50%,-50%); }
+.faq-ico::after { width:2px; height:14px; transform: translate(-50%,-50%); transition: transform .35s; }
+.faq-item[open] .faq-ico{ transform: rotate(180deg); color: var(--accent, #ff7a59); }
+.faq-item[open] .faq-ico::after{ transform: translate(-50%,-50%) scaleY(0); }
+.faq-body{
+  padding: 0 24px 22px;
+  color: var(--muted, #555);
+  line-height: 1.7; font-size: .98rem;
+  animation: faqOpen .45s ease both;
+}
+.faq-body a{ color: var(--accent, #ff7a59); text-decoration: none; border-bottom:1px dotted currentColor; }
+@keyframes faqOpen{ from{ opacity:0; transform: translateY(-6px);} to{ opacity:1; transform:none;} }
+
+/* dark theme footers — when a theme already has dark surface, keep accent contrast crisp */
+
+/* ===================================================================
+   MOBILE NAV + RESPONSIVE FIXES (appended)
+   =================================================================== */
+
+/* Bigger logo (header + footer) */
+.site-header .brand-logo{ width:46px; height:46px; border-radius:10px; }
+.site-header .brand-name{ font-size:1.35rem; }
+.site-footer .brand-logo{ width:54px; height:54px; border-radius:12px; }
+.site-footer .brand-name{ font-size:1.55rem; }
+
+/* Hamburger toggle (hidden on desktop) */
+.nav-toggle{
+  display:none; width:44px; height:44px; padding:10px; border:1px solid color-mix(in oklab, var(--text,#111) 14%, transparent);
+  background: color-mix(in oklab, var(--bg,#fff) 80%, transparent); border-radius:12px; cursor:pointer;
+  flex-direction:column; justify-content:space-between; align-items:stretch;
+  transition: background .3s, border-color .3s;
+}
+.nav-toggle span{ display:block; height:2px; width:100%; background: var(--text,#111); border-radius:2px; transition: transform .35s, opacity .25s; transform-origin:center; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+/* Responsive images everywhere */
+img{ max-width:100%; height:auto; }
+.tile, .feature-media, .post-media, .hero-media, .gallery img{ max-width:100%; }
+
+/* 3-column footer (no newsletter) */
+.site-footer .foot-cols{ grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+@media (max-width: 860px){ .site-footer .foot-cols{ grid-template-columns: repeat(2, 1fr) !important; } }
+@media (max-width: 480px){ .site-footer .foot-cols{ grid-template-columns: 1fr !important; } }
+
+/* MOBILE: hamburger + slide-down menu */
+@media (max-width: 880px){
+  .site-header .container.nav{ position:relative; flex-wrap:wrap; gap:10px; }
+  .nav-toggle{ display:flex; order:2; margin-left:auto; }
+  .site-header .nav-cta{ order:3; padding:10px 16px; font-size:.92rem; }
+  .site-header .nav-links{
+    order:4; flex-basis:100%; width:100%;
+    display:flex; flex-direction:column; gap:0;
+    max-height:0; overflow:hidden; opacity:0;
+    transition: max-height .45s ease, opacity .35s ease, padding .35s ease;
+    background: var(--card,#fff);
+    border-radius:14px;
+    padding:0 14px;
+    margin-top:6px;
+    box-shadow: 0 18px 40px -24px rgba(0,0,0,.25);
+  }
+  .site-header .nav-links.is-open{
+    max-height:520px; opacity:1; padding:10px 14px;
+  }
+  .site-header .nav-links a{
+    padding:14px 6px; border-bottom:1px solid color-mix(in oklab, var(--text,#111) 8%, transparent);
+    font-size:1rem;
+  }
+  .site-header .nav-links a:last-child{ border-bottom:none; }
+
+  /* hero / page-hero spacing */
+  .hero.hero-slider{ padding:96px 0 84px; }
+  .page-hero{ padding-top:90px; padding-bottom:60px; }
+  .hero-title{ font-size: clamp(1.9rem, 7vw, 2.4rem) !important; }
+  .hero-sub{ font-size: 1rem !important; }
+
+  /* tiles / grids stack nicely */
+  .grid, .grid-3, .grid-4, .features, .cards, .posts{
+    grid-template-columns: 1fr !important; gap:18px !important;
+  }
+  .tile{ min-height: 200px; }
+  .feature-media, .post-media{ min-height: 220px; }
+
+  /* container padding */
+  .container{ padding-left:18px; padding-right:18px; }
+
+  /* theme switcher smaller */
+  .theme-switcher{ transform: scale(.78); transform-origin: bottom right; }
+}
+
+@media (max-width: 480px){
+  .site-header .brand-name{ font-size:1.15rem; }
+  .site-header .brand-logo{ width:40px; height:40px; }
+  .site-header .nav-cta{ padding:8px 12px; font-size:.85rem; }
+}
+/* ===== CONTACT PAGE SOCIAL LINKS ===== */
+.socials {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.socials .soc {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--accent, #ff7a59) 8%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent, #ff7a59) 18%, transparent);
+    color: var(--accent, #ff7a59);
+    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-decoration: none;
+}
+
+.socials .soc svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.socials .soc:hover {
+    background: var(--accent, #ff7a59);
+    color: #fff;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 28px -10px color-mix(in oklab, var(--accent, #ff7a59) 60%, transparent);
+}
+
+.socials .soc:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .socials {
+        gap: 10px;
+    }
+    
+    .socials .soc {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .socials .soc svg {
+        width: 18px;
+        height: 18px;
+    }
+}

@@ -19,6 +19,6 @@
             <a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a>
             <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
         </nav>
-        <a class="btn btn-primary nav-cta" href="#donate">Donate</a>
+        <a class="btn btn-primary nav-cta" href="https://tevini.co.uk/">Donate</a>
     </div>
 </header>
