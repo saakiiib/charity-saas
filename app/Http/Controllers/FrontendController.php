@@ -41,6 +41,8 @@ class FrontendController extends Controller
         $masters = $this->getMaster($tenant->id, 'home');
         $sliders = Slider::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
         $difference = $masters->firstWhere('name', 'difference');
+        $serviceContent = $masters->firstWhere('name', 'services');
+        $services = Service::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->limit(4)->get();
         $stats = $masters->firstWhere('name', 'stats');
         $latestPost = Post::where('tenant_id', $tenant->id)->where('status', 1)->latest()->first();
         $testimonialsSection = $masters->firstWhere('name', 'testimonials');
@@ -48,7 +50,9 @@ class FrontendController extends Controller
         $galleries = Gallery::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
         $gallerySection = $masters->firstWhere('name', 'gallery');
 
-        return view('frontend.index', compact('sliders', 'difference', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection'));
+        $faqs    = Faq::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
+
+        return view('frontend.index', compact('sliders', 'difference', 'serviceContent', 'services', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection', 'faqs'));
     }
 
     public function about()
@@ -90,12 +94,13 @@ class FrontendController extends Controller
 
     public function gallery()
     {
-        $tenant   = $this->getTenant();
-        $company  = $this->getCompany($tenant->id);
-        $masters  = $this->getMaster($tenant->id, 'gallery');
+        $tenant    = $this->getTenant();
+        $company   = $this->getCompany($tenant->id);
+        $masters   = $this->getMaster($tenant->id, 'other');
+        $hero      = $masters->firstWhere('name', 'hero');
         $galleries = Gallery::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
 
-        return view('frontend.gallery', compact('tenant', 'company', 'masters', 'galleries'));
+        return view('frontend.gallery', compact('tenant', 'company', 'hero', 'galleries'));
     }
 
     public function updates()

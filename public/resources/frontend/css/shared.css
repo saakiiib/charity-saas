@@ -331,7 +331,7 @@ body.lb-open{overflow:hidden}
    =================================================================== */
 
 /* Bigger logo (header + footer) */
-.site-header .brand-logo{ width:46px; height:46px; border-radius:10px; }
+.site-header .brand-logo{ width:60px; height:60px; border-radius:10px; }
 .site-header .brand-name{ font-size:1.35rem; }
 .site-footer .brand-logo{ width:54px; height:54px; border-radius:12px; }
 .site-footer .brand-name{ font-size:1.55rem; }
