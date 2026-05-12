@@ -168,6 +168,8 @@ class CompanyDetailsController extends Controller
         $data->meta_keywords = $request->meta_keywords;
         $data->google_site_verification = $request->google_site_verification;
         $data->google_analytics_id = $request->google_analytics_id;
+        $data->privacy_policy      = $request->privacy_policy;
+        $data->terms_and_conditions = $request->terms_and_conditions;
 
         $data->save();
 

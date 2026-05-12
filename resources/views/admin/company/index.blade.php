@@ -305,6 +305,20 @@
                                     </div>
                                 </div>
 
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Privacy Policy</label>
+                                        <textarea class="summernote" name="privacy_policy" id="privacy_policy">{{ old('privacy_policy', $data->privacy_policy) }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Terms &amp; Conditions</label>
+                                        <textarea class="summernote" name="terms_and_conditions" id="terms_and_conditions">{{ old('terms_and_conditions', $data->terms_and_conditions) }}</textarea>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Fav Icon</label>
