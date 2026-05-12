@@ -2,7 +2,7 @@
 
 @section('content')
     @foreach ($sections as $sectionName)
-        @if ($sectionName === 'slider')
+        @if ($sectionName === 'slider' && $sliders->count() > 0)
             {{-- Slider --}}
             <section class="hero hero-slider" data-slider>
                 <div class="hero-slides">
@@ -36,7 +36,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'services')
+        @if ($sectionName === 'services' && $services->count() > 0)
             {{-- Services --}}
             <section class="section section-alt">
                 <div class="container">
@@ -59,7 +59,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'difference')
+        @if ($sectionName === 'difference' && $difference->count() > 0)
             {{-- Difference --}}
             <section class="section">
                 <div class="container">
@@ -80,7 +80,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'stats')
+        @if ($sectionName === 'stats' && $stats->count() > 0)
             {{-- Stats --}}
             <section class="section section-alt">
                 <div class="container">
@@ -100,7 +100,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'latest_post')
+        @if ($sectionName === 'latest_post' && $latestPost)
             {{-- Latest Post --}}
             <section class="section">
                 <div class="container feature">
@@ -117,7 +117,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'testimonials')
+        @if ($sectionName === 'testimonials' && $testimonials->count() > 0)
             {{-- Testimonials --}}
             <section class="section section-alt">
                 <div class="container">
@@ -141,7 +141,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'gallery')
+        @if ($sectionName === 'gallery' && $galleries->count() > 0)
             {{-- Gallery --}}
             <section class="section">
                 <div class="container">
@@ -161,7 +161,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'faq')
+        @if ($sectionName === 'faq' && $faqs->count() > 0)
             {{-- FAQ --}}
             <section class="section faq-section">
                 <div class="container">

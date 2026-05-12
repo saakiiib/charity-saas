@@ -16,7 +16,7 @@
     </section>
 
     @foreach ($sections as $sectionName)
-        @if ($sectionName === 'story')
+        @if ($sectionName === 'story' && $story)
             {{-- Story --}}
             <section class="section">
                 <div class="container feature">
@@ -37,7 +37,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'beliefs')
+        @if ($sectionName === 'beliefs' && $beliefs)
             {{-- Beliefs --}}
             <section class="section section-alt">
                 <div class="container">
@@ -58,7 +58,7 @@
             </section>
         @endif
 
-        @if ($sectionName === 'team')
+        @if ($sectionName === 'team' && $team)
             {{-- Team --}}
             <section class="section">
                 <div class="container">
