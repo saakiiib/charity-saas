@@ -30,7 +30,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Image <span class="text-danger">*</span> <small class="text-muted">(used as thumbnail if video)</small></label>
+                                <label class="form-label">Image <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" id="image" name="image" accept="image/*">
                                 <img id="previewImage" src="#" alt="" class="img-thumbnail mt-2"
                                     style="max-width:200px; display:none;">
