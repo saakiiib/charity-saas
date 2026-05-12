@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\CompanyDetailsController;
 use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MasterController;
 use App\Http\Controllers\Admin\PostController;
@@ -103,18 +103,17 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['auth', 'is_admin']], funct
     Route::post('/services-order', [ServiceController::class, 'updateOrder'])->name('service.updateOrder');
 
     // Faq
-    Route::get('/faqs', [FaqController::class, 'index'])->name('faq.index');
-    Route::post('/faqs', [FaqController::class, 'store'])->name('faq.store');
-    Route::get('/faqs/{id}/edit', [FaqController::class, 'edit'])->name('faq.edit');
-    Route::post('/faqs-update', [FaqController::class, 'update'])->name('faq.update');
-    Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faq.delete');
-    Route::post('/faqs-status', [FaqController::class, 'toggleStatus'])->name('faq.toggleStatus');
-    Route::post('/faqs-order', [FaqController::class, 'updateOrder'])->name('faq.updateOrder');
+    Route::get('/faqs', [FAQController::class, 'index'])->name('faq.index');
+    Route::post('/faqs', [FAQController::class, 'store'])->name('faq.store');
+    Route::get('/faqs/{id}/edit', [FAQController::class, 'edit'])->name('faq.edit');
+    Route::post('/faqs-update', [FAQController::class, 'update'])->name('faq.update');
+    Route::delete('/faqs/{id}', [FAQController::class, 'destroy'])->name('faq.delete');
+    Route::post('/faqs-status', [FAQController::class, 'toggleStatus'])->name('faq.toggleStatus');
+    Route::post('/faqs-order', [FAQController::class, 'updateOrder'])->name('faq.updateOrder');
 
     // Contact
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
     Route::delete('/contacts/{id}/delete', [ContactController::class, 'destroy'])->name('contacts.delete');
     Route::post('/contacts/toggle-status', [ContactController::class, 'toggleStatus'])->name('contacts.toggleStatus');
-
 });
