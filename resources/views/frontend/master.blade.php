@@ -91,7 +91,7 @@
 
     <script src="{{ asset('resources/frontend/js/shared.js') }}"></script>
 
-    @yield('script')
+    @stack('script')
 
 </body>
 </html>

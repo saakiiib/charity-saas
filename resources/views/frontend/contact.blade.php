@@ -96,10 +96,12 @@
             @endif
         </div>
 
-        <form class="contact-form" action="{{ route('contact.submit') }}" method="POST">
+        <form class="contact-form" id="contactForm" action="{{ route('contact.submit') }}" method="POST">
             @csrf
             @if(session('success'))
-                <div class="alert alert-success mb-3">{{ session('success') }}</div>
+            <div style="margin-bottom:20px;">
+                <div class="alert alert-success">{{ session('success') }}</div>
+            </div>
             @endif
             <div class="row">
                 <div>
@@ -129,6 +131,11 @@
                 <label for="msg">Your message</label>
                 <textarea id="msg" name="message" required >{{ old('message') }}</textarea>
             </div>
+            <div style="margin-bottom:22px">
+                <label id="captcha-question"></label>
+                <input id="captcha-answer" type="number" placeholder="Your answer">
+                <span id="captcha-error" class="d-none" style="color:red;font-size:.85rem;display:block;margin-top:4px"></span>
+            </div>
             <button class="btn btn-primary" type="submit">Send message</button>
         </form>
     </div>
@@ -138,3 +145,35 @@
 @include('frontend.cta')
 
 @endsection
+
+@push('script')
+<script>
+(function () {
+    function generateCaptcha() {
+        var num1 = Math.floor(Math.random() * 10) + 1;
+        var num2 = Math.floor(Math.random() * 10) + 1;
+        return { question: 'What is ' + num1 + ' + ' + num2 + '? *', answer: num1 + num2 };
+    }
+
+    var captcha = generateCaptcha();
+    document.getElementById('captcha-question').textContent = captcha.question;
+
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+        var userAnswer = parseInt(document.getElementById('captcha-answer').value);
+        var error = document.getElementById('captcha-error');
+        if (userAnswer !== captcha.answer) {
+            e.preventDefault();
+            error.style.display = 'block';
+            error.textContent = 'Incorrect answer. Please try again.';
+            captcha = generateCaptcha();
+            document.getElementById('captcha-question').textContent = captcha.question;
+            document.getElementById('captcha-answer').value = '';
+        } else {
+            error.style.display = 'none';
+            this.querySelector('button[type="submit"]').disabled = true;
+            this.querySelector('button[type="submit"]').textContent = 'Sending...';
+        }
+    });
+})();
+</script>
+@endpush

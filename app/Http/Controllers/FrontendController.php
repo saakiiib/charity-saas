@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMail;
 use App\Models\CompanyDetails;
 use App\Models\Contact;
 use App\Models\Faq;
@@ -13,6 +14,7 @@ use App\Models\Service;
 use App\Models\Slider;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Mail;
 
 class FrontendController extends Controller
 {
@@ -172,7 +174,8 @@ class FrontendController extends Controller
 
     public function contactSubmit(Request $request)
     {
-        $tenant = $this->getTenant();
+        $tenant  = $this->getTenant();
+        $company = $this->getCompany($tenant->id);
 
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -183,7 +186,7 @@ class FrontendController extends Controller
             'message'    => 'required|string',
         ]);
 
-        Contact::create([
+        $contact = Contact::create([
             'tenant_id'  => $tenant->id,
             'first_name' => $request->first_name,
             'last_name'  => $request->last_name,
@@ -192,6 +195,10 @@ class FrontendController extends Controller
             'subject'    => $request->subject,
             'message'    => $request->message,
         ]);
+
+        if ($company?->email1) {
+            Mail::to($company->email1)->send(new ContactMail($contact, $tenant, $company));
+        }
 
         return back()->with('success', 'Thank you ' . $request->first_name . '! Your message has been received.');
     }
