@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <div class="row g-4">
-                    @foreach([1, 2, 3] as $theme)
+                    @foreach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] as $theme)
                     <div class="col-md-4">
                         <label for="theme{{ $theme }}" class="theme-card w-100" style="cursor:pointer;">
                             <input type="radio" name="theme" id="theme{{ $theme }}"
@@ -22,9 +22,8 @@
                                 hidden>
                             <div class="card h-100 border-2 {{ $tenant->theme == $theme ? 'border-primary' : '' }}"
                                 id="themeCard{{ $theme }}">
-                                <img src="{{ asset('resources/backend/theme/theme-' . $theme . '.png') }}"
-                                    class="card-img-top" alt="Theme {{ $theme }}"
-                                    style="height:200px; object-fit:cover;">
+                                <img src="{{ asset('resources/backend/theme/' . $theme . '.png') }}"
+                                    class="img-fluid" alt="Theme {{ $theme }}">
                                 <div class="card-body text-center py-3">
                                     <h6 class="mb-1">Theme {{ $theme }}</h6>
                                     @if($tenant->theme == $theme)

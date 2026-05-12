@@ -8,6 +8,7 @@ use App\Models\Faq;
 use App\Models\Gallery;
 use App\Models\Master;
 use App\Models\Post;
+use App\Models\Section;
 use App\Models\Service;
 use App\Models\Slider;
 use App\Models\Testimonial;
@@ -39,6 +40,7 @@ class FrontendController extends Controller
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
         $masters = $this->getMaster($tenant->id, 'home');
+        $sections = Section::where('tenant_id', $tenant->id)->where('page', 'home')->where('status', 1)->orderBy('sl')->pluck('name');
         $sliders = Slider::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
         $difference = $masters->firstWhere('name', 'difference');
         $serviceContent = $masters->firstWhere('name', 'services');
@@ -52,7 +54,7 @@ class FrontendController extends Controller
 
         $faqs    = Faq::where('tenant_id', $tenant->id)->where('status', 1)->orderBy('serial')->get();
 
-        return view('frontend.index', compact('sliders', 'difference', 'serviceContent', 'services', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection', 'faqs'));
+        return view('frontend.index', compact('sections', 'sliders', 'difference', 'serviceContent', 'services', 'stats', 'latestPost', 'testimonialsSection', 'testimonials', 'galleries', 'gallerySection', 'faqs'));
     }
 
     public function about()
@@ -60,12 +62,13 @@ class FrontendController extends Controller
         $tenant  = $this->getTenant();
         $company = $this->getCompany($tenant->id);
         $masters = $this->getMaster($tenant->id, 'about');
+        $sections = Section::where('tenant_id', $tenant->id)->where('page', 'about')->where('status', 1)->orderBy('sl')->pluck('name');
         $hero    = $masters->firstWhere('name', 'hero');
         $story   = $masters->firstWhere('name', 'story');
         $beliefs = $masters->firstWhere('name', 'beliefs');
         $team    = $masters->firstWhere('name', 'team');
 
-        return view('frontend.about', compact('hero', 'story', 'beliefs', 'team'));
+        return view('frontend.about', compact('sections','hero', 'story', 'beliefs', 'team'));
     }
 
     public function services()

@@ -10,7 +10,10 @@ class SectionController extends Controller
 {
     public function index()
     {
-        $sections = Section::where('tenant_id', $this->tenantId())->orderBy('sl')->get();
+        $sections = Section::where('tenant_id', $this->tenantId())
+            ->orderBy('sl')->get()
+            ->groupBy('page');
+
         return view('admin.sections.index', compact('sections'));
     }
 
