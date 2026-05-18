@@ -197,7 +197,7 @@ class FrontendController extends Controller
         ]);
 
         if ($company?->email1) {
-            Mail::to($company->email1)->send(new ContactMail($contact, $tenant, $company));
+            // Mail::to($company->email1)->send(new ContactMail($contact, $tenant, $company));
         }
 
         return back()->with('success', 'Thank you ' . $request->first_name . '! Your message has been received.');
